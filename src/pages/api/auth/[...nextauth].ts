@@ -3,6 +3,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import Email from "next-auth/providers/email";
 import prisma from "../../../../lib/prisma";
+import { User } from "@/DDD/User/interfaces/UserModel";
+import { userRegister } from "@/DDD/useCases";
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -27,6 +29,7 @@ export default NextAuth({
     createUser: async ({ user }) => {
       console.log("createUser", user);
       // Here should publish domain event
+      userRegister.publish("UserCreated", user as User);
     },
   },
 });

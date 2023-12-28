@@ -1,5 +1,5 @@
 import { EventBus } from "./EventBus";
-import { EventTypes } from "./EventTypes";
+import { EventTypes } from "./interfaces/EventTypes";
 
 describe("EventBus", () => {
   let eventBus: EventBus;
@@ -10,7 +10,7 @@ describe("EventBus", () => {
 
   describe("subscribe", () => {
     it("should subscribe to an event and call the handler when published", () => {
-      const event = EventTypes.UserCreated;
+      const event: EventTypes = "UserCreated";
       const handler = jest.fn();
 
       eventBus.subscribe(event, handler);
@@ -20,7 +20,7 @@ describe("EventBus", () => {
     });
 
     it("should call multiple handlers when an event is published", () => {
-      const event = EventTypes.UserDeleted;
+      const event: EventTypes = "UserDeleted";
       const handler1 = jest.fn();
       const handler2 = jest.fn();
 
@@ -32,7 +32,7 @@ describe("EventBus", () => {
       expect(handler2).toHaveBeenCalledWith({ id: 1 });
     });
     it("should not be able to subscribe to the same event twice", () => {
-      const event = EventTypes.UserUpdated;
+      const event: EventTypes = "UserUpdated";
       const handler = jest.fn();
 
       eventBus.subscribe(event, handler);
@@ -45,7 +45,7 @@ describe("EventBus", () => {
 
   describe("publish", () => {
     it("should not call the handler if not subscribed to the event", () => {
-      const event = EventTypes.UserCreated;
+      const event: EventTypes = "UserCreated";
       const handler = jest.fn();
 
       eventBus.publish(event, { id: 1, name: "John Doe" });
@@ -56,7 +56,7 @@ describe("EventBus", () => {
 
   describe("unsubscribe", () => {
     it("should unsubscribe a handler from an event", () => {
-      const event = EventTypes.UserCreated;
+      const event: EventTypes = "UserCreated";
       const handler = jest.fn();
 
       eventBus.subscribe(event, handler);
@@ -67,7 +67,7 @@ describe("EventBus", () => {
     });
 
     it("should not throw an error when unsubscribing a non-existing handler", () => {
-      const event = EventTypes.UserCreated;
+      const event: EventTypes = "UserCreated";
       const handler = jest.fn();
 
       eventBus.unsubscribe(event, handler);

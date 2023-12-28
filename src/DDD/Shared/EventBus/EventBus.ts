@@ -1,5 +1,6 @@
-import { EventTypes } from "./EventTypes";
+import { EventTypes } from "./interfaces/EventTypes";
 
+const debugEvents = process.env.DEBUG_EVENTS === "true";
 // Create EventBus
 export class EventBus {
   private handlers: Map<EventTypes, Array<(data: any) => void>>;
@@ -21,9 +22,18 @@ export class EventBus {
   publish(event: EventTypes, data: any) {
     const handlers = this.handlers.get(event);
     if (handlers) {
-      handlers.forEach((handler) => handler(data));
+      if (debugEvents) {
+        console.log("📢 Publishing event: ", event);
+      }
+      handlers.forEach((handler) => {
+        if (debugEvents) {
+          console.log("🔧 Calling handler: ", handler);
+        }
+        handler(data);
+      });
     }
   }
+  // Maybe is not even necessary to unsubscribe
   unsubscribe(event: EventTypes, handler: (data: any) => void) {
     const handlers = this.handlers.get(event);
     if (handlers) {
@@ -32,5 +42,8 @@ export class EventBus {
         handlers.splice(index, 1);
       }
     }
+  }
+  debug() {
+    console.log(this.handlers);
   }
 }
