@@ -39,4 +39,24 @@ describe("EventBus", () => {
     expect(handler1).toHaveBeenCalledWith({ id: 1 });
     expect(handler2).toHaveBeenCalledWith({ id: 1 });
   });
+
+  it("should unsubscribe a handler from an event", () => {
+    const event = EventTypes.UserCreated;
+    const handler = jest.fn();
+
+    eventBus.subscribe(event, handler);
+    eventBus.unsubscribe(event, handler);
+    eventBus.publish(event, { id: 1, name: "John Doe" });
+
+    expect(handler).not.toHaveBeenCalled();
+  });
+
+  it("should not throw an error when unsubscribing a non-existing handler", () => {
+    const event = EventTypes.UserCreated;
+    const handler = jest.fn();
+
+    eventBus.unsubscribe(event, handler);
+
+    expect(handler).not.toHaveBeenCalled();
+  });
 });

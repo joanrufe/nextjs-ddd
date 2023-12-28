@@ -21,4 +21,13 @@ export class EventBus {
       handlers.forEach((handler) => handler(data));
     }
   }
+  unsubscribe(event: EventTypes, handler: (data: any) => void) {
+    const handlers = this.handlers.get(event);
+    if (handlers) {
+      const index = handlers.indexOf(handler);
+      if (index !== -1) {
+        handlers.splice(index, 1);
+      }
+    }
+  }
 }
