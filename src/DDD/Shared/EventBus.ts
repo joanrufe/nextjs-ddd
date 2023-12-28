@@ -12,7 +12,10 @@ export class EventBus {
     if (!this.handlers.has(event)) {
       this.handlers.set(event, []);
     }
-    this.handlers.get(event)?.push(handler);
+    const handlers = this.handlers.get(event);
+    if (handlers && !handlers.includes(handler)) {
+      handlers.push(handler);
+    }
   }
 
   publish(event: EventTypes, data: any) {

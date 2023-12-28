@@ -31,6 +31,16 @@ describe("EventBus", () => {
       expect(handler1).toHaveBeenCalledWith({ id: 1 });
       expect(handler2).toHaveBeenCalledWith({ id: 1 });
     });
+    it("should not be able to subscribe to the same event twice", () => {
+      const event = EventTypes.UserUpdated;
+      const handler = jest.fn();
+
+      eventBus.subscribe(event, handler);
+      eventBus.subscribe(event, handler);
+      eventBus.publish(event, { id: 1, name: "John Doe" });
+
+      expect(handler).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe("publish", () => {
