@@ -1,4 +1,4 @@
-import { User } from "@/DDD/User/interfaces/UserModel";
+import { UserModel } from "@/DDD/User/interfaces/UserModel";
 import { NotificationService } from "../Services/NotificationService";
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
 
@@ -11,7 +11,7 @@ export class SendWelcomeNotification {
     this.notificationService = notificationService;
   }
 
-  onUserCreated(data: User) {
+  onUserCreated(data: UserModel) {
     this.notificationService.createNotification(
       data.id,
       `Welcome to the app, ${data.name || data.email}!`

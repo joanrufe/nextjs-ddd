@@ -1,6 +1,6 @@
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
 import { UserService } from "../Services/UserService";
-import { User } from "../interfaces/UserModel";
+import { UserModel } from "../interfaces/UserModel";
 import { EventTypes } from "@/DDD/Shared/EventBus/interfaces/EventTypes";
 
 export class UserRegister {
@@ -12,14 +12,14 @@ export class UserRegister {
     this.userService = userService;
   }
 
-  async register(user: User): Promise<void> {
+  async register(user: UserModel): Promise<void> {
     await this.userService.create(user);
     this.publish("UserCreated", user);
   }
   // Needs to be apart from the register method because
   // NextAuth is the one creating the user, so it can be called
   // from the NextAuth callback
-  publish(event: EventTypes, data: User) {
+  publish(event: EventTypes, data: UserModel) {
     this.eventBus.publish(event, data);
   }
 }

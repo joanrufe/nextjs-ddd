@@ -1,6 +1,6 @@
 import { SendWelcomeNotification } from "./SendWelcomeNotification";
 import { NotificationService } from "../Services/NotificationService";
-import { User } from "@/DDD/User/interfaces/UserModel";
+import { UserModel } from "@/DDD/User/interfaces/UserModel";
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
 
 describe("SendWelcomeNotification", () => {
@@ -19,7 +19,7 @@ describe("SendWelcomeNotification", () => {
 
   describe("onUserCreated", () => {
     it("should create a welcome notification with the user's ID and name", () => {
-      const user: User = {
+      const user: UserModel = {
         id: "123",
         name: "John Doe",
         email: "john.doe@example.com",
@@ -41,7 +41,7 @@ describe("SendWelcomeNotification", () => {
     });
   });
   it("should create a welcome notification with the email if no name is provided", () => {
-    const user: User = {
+    const user: UserModel = {
       id: "123",
       name: null,
       email: "john.doe@example.com",

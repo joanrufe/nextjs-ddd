@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import prismaSingleton from "../../../../lib/prisma";
-import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
-import { User } from "../interfaces/UserModel";
+import { UserModel } from "../interfaces/UserModel";
 
 export class UserService {
   constructor(private readonly prisma: PrismaClient = prismaSingleton) {}
@@ -15,7 +14,7 @@ export class UserService {
 
     return user;
   }
-  async create(user: Omit<User, "id">): Promise<User> {
+  async create(user: Omit<UserModel, "id">): Promise<UserModel> {
     const createdUser = await this.prisma.user.create({
       data: {
         ...user,

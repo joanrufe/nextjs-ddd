@@ -2,7 +2,7 @@ import { UserRegister } from "./UserRegister";
 import { EventBus } from "../../Shared/EventBus/EventBus";
 import { UserService } from "../Services/UserService";
 import { EventTypes } from "../../Shared/EventBus/interfaces/EventTypes";
-import { User } from "../interfaces/UserModel";
+import { UserModel } from "../interfaces/UserModel";
 
 describe("UserRegister", () => {
   let userRegister: UserRegister;
@@ -17,7 +17,7 @@ describe("UserRegister", () => {
 
   describe("register", () => {
     it("should create a user and publish UserCreated event", async () => {
-      const user: User = {
+      const user: UserModel = {
         id: "1",
         name: "John Doe",
         email: "whatever@email.com",
