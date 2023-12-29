@@ -75,4 +75,32 @@ describe("EventBus", () => {
       expect(handler).not.toHaveBeenCalled();
     });
   });
+
+  describe("debug", () => {
+    beforeAll(() => {
+      process.env.DEBUG_EVENTS = "true";
+      eventBus = new EventBus();
+    });
+    afterAll(() => {
+      delete process.env.DEBUG_EVENTS;
+    });
+    it("should log the handlers and subscribersClasses when process.env.DEBUG_EVENTS is true", () => {
+      const event: EventTypes = "UserCreated";
+      const handler = jest.fn();
+      const subscriberClass = "UserRegister";
+
+      jest.spyOn(console, "log").mockImplementation(() => {});
+
+      eventBus.subscribe(event, handler, subscriberClass);
+      eventBus.publish(event, { id: 1, name: "John Doe" });
+
+      expect(console.log).toHaveBeenCalledWith("📢 Publishing event: ", event);
+      expect(console.log).toHaveBeenCalledWith(
+        "🏭 Subscriber class: ",
+        subscriberClass,
+        "🔧 method:",
+        "mockConstructor"
+      );
+    });
+  });
 });

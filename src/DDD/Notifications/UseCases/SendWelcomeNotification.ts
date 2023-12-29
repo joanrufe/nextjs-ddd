@@ -7,7 +7,11 @@ export class SendWelcomeNotification {
     private readonly eventBus: EventBus,
     private readonly notificationService = new NotificationService()
   ) {
-    this.eventBus.subscribe("UserCreated", this.onUserCreated.bind(this));
+    this.eventBus.subscribe(
+      "UserCreated",
+      this.onUserCreated.bind(this),
+      this.constructor.name
+    );
     this.notificationService = notificationService;
   }
 

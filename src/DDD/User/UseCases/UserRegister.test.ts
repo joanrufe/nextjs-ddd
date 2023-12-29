@@ -26,7 +26,7 @@ describe("UserRegister", () => {
       };
 
       jest.spyOn(userService, "create").mockResolvedValueOnce(user);
-      jest.spyOn(eventBus, "publish");
+      jest.spyOn(eventBus, "publish").mockImplementation(() => {});
 
       await userRegister.register(user);
 
@@ -46,7 +46,7 @@ describe("UserRegister", () => {
         image: null,
       };
 
-      jest.spyOn(eventBus, "publish");
+      jest.spyOn(eventBus, "publish").mockImplementation(() => {});
 
       userRegister.publish(event, data);
 

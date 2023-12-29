@@ -17,6 +17,10 @@ describe("SendWelcomeNotification", () => {
     );
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe("onUserCreated", () => {
     it("should create a welcome notification with the user's ID and name", () => {
       const user: UserModel = {
@@ -27,10 +31,9 @@ describe("SendWelcomeNotification", () => {
         emailVerified: null,
       };
 
-      const createNotificationSpy = jest.spyOn(
-        notificationService,
-        "createNotification"
-      );
+      const createNotificationSpy = jest
+        .spyOn(notificationService, "createNotification")
+        .mockImplementation(async (..._args) => {});
 
       sendWelcomeNotification.onUserCreated(user);
 
@@ -48,10 +51,9 @@ describe("SendWelcomeNotification", () => {
       image: "https://example.com/image.png",
       emailVerified: null,
     };
-    const createNotificationSpy = jest.spyOn(
-      notificationService,
-      "createNotification"
-    );
+    const createNotificationSpy = jest
+      .spyOn(notificationService, "createNotification")
+      .mockImplementation(async (..._args) => {});
 
     sendWelcomeNotification.onUserCreated(user);
 

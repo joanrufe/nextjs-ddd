@@ -10,10 +10,6 @@ describe("UserService", () => {
     userService = new UserService(prisma);
   });
 
-  afterEach(async () => {
-    await prisma.$disconnect();
-  });
-
   describe("getUser", () => {
     it("should return the user with the given id", async () => {
       // Mock the PrismaClient's `user.findUnique` method
