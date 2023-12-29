@@ -1,11 +1,11 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import Email from "next-auth/providers/email";
 import prisma from "../../../../lib/prisma";
 import { UserModel, userRegister } from "@/DDD";
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
@@ -30,4 +30,9 @@ export default NextAuth({
       userRegister.publish("UserCreated", user as UserModel);
     },
   },
-});
+  pages: {
+    signIn: "/auth/email-signin",
+  },
+};
+
+export default NextAuth(authOptions);
