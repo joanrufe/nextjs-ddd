@@ -4,3 +4,8 @@ Key points:
 
 - Event Based Architecture using an in-memory synchronous event bus
 - Prevent imports from DDD folder that are not the entry point src/DDD/index.ts. This is done by eslint `import/no-internal-modules`` rule
+
+DB schema:
+image here [DB_schema.svg](./docs/DB_schema.svg)
+
+<img src="./docs/DB_schema.svg"/>

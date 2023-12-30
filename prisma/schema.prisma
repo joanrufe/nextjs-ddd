@@ -9,6 +9,12 @@ generator client {
     previewFeatures = ["referentialActions"] // You won't need this in Prisma 3.X or higher.
 }
 
+generator erd {
+    provider = "prisma-erd-generator"
+    output   = "../docs/DB_schema.svg"
+    theme    = "forest"
+}
+
 model Account {
     id                String  @id @default(cuid())
     userId            String
