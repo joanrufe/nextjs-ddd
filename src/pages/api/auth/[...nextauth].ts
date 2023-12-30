@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
   events: {
     createUser: async ({ user }) => {
       // Here should publish domain event
-      userRegister.publish("UserCreated", user as UserModel);
+      userRegister.publish(user as UserModel);
     },
   },
   pages: {

@@ -1,6 +1,6 @@
-import { UserModel } from "@/DDD/User/interfaces/UserModel";
 import { NotificationService } from "../Services/NotificationService";
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
+import { UserCreatedEvent } from "@/DDD/User/Events/UserCreatedEvent";
 
 export class SendWelcomeNotification {
   constructor(
@@ -8,17 +8,18 @@ export class SendWelcomeNotification {
     private readonly notificationService = new NotificationService()
   ) {
     this.eventBus.subscribe(
-      "UserCreated",
+      UserCreatedEvent.name,
       this.onUserCreated.bind(this),
       this.constructor.name
     );
     this.notificationService = notificationService;
   }
 
-  onUserCreated(data: UserModel) {
+  onUserCreated(event: UserCreatedEvent) {
+    const { user } = event;
     this.notificationService.createNotification(
-      data.id,
-      `Welcome to the app, ${data.name || data.email}!`
+      user.id,
+      `Welcome to the app, ${user.name || user.email}!`
     );
   }
 }

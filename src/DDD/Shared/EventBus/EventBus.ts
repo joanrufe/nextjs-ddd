@@ -1,17 +1,16 @@
-import { EventTypes } from "./interfaces/EventTypes";
+// Generic type for events
+export class DomainEvent {}
 
-// const debugEvents = process.env.DEBUG_EVENTS === "true";
-// Create EventBus
 export class EventBus {
   private handlers: Map<
-    EventTypes,
+    string,
     Array<{ handler: (data: any) => void; subscriberClass?: string }>
   >;
   private debugEvents = process.env.DEBUG_EVENTS === "true";
 
   constructor() {
     this.handlers = new Map<
-      EventTypes,
+      string,
       Array<{ handler: (data: any) => void; subscriberClass?: string }>
     >();
   }
@@ -25,7 +24,7 @@ export class EventBus {
    * @param subscriberClass the name of the class that is subscribing to the event, can be get using this.constructor.name
    */
   subscribe(
-    event: EventTypes,
+    event: string,
     handler: (data: any) => void,
     subscriberClass?: string
   ) {
@@ -44,11 +43,11 @@ export class EventBus {
     }
   }
 
-  publish(event: EventTypes, data: any) {
-    const handlers = this.handlers.get(event);
+  publish<T extends DomainEvent>(event: T) {
+    const handlers = this.handlers.get(event.constructor.name);
     if (handlers) {
       if (this.debugEvents) {
-        console.log("📢 Publishing event: ", event);
+        console.log("📢 Publishing event: ", event.constructor.name);
       }
       handlers.forEach(({ handler, subscriberClass }) => {
         if (this.debugEvents) {
@@ -61,12 +60,12 @@ export class EventBus {
             );
           }
         }
-        handler(data);
+        handler(event);
       });
     }
   }
 
-  unsubscribe(event: EventTypes, handler: (data: any) => void) {
+  unsubscribe(event: string, handler: (data: any) => void) {
     const handlers = this.handlers.get(event);
     if (handlers) {
       const index = handlers.findIndex((h) => h.handler === handler);
@@ -75,6 +74,7 @@ export class EventBus {
       }
     }
   }
+
   debug() {
     console.log(this.handlers);
   }

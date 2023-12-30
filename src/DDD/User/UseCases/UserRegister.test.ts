@@ -1,7 +1,6 @@
 import { UserRegister } from "./UserRegister";
 import { EventBus } from "../../Shared/EventBus/EventBus";
 import { UserService } from "../Services/UserService";
-import { EventTypes } from "../../Shared/EventBus/interfaces/EventTypes";
 import { UserModel } from "../interfaces/UserModel";
 
 describe("UserRegister", () => {
@@ -31,14 +30,13 @@ describe("UserRegister", () => {
       await userRegister.register(user);
 
       expect(userService.create).toHaveBeenCalledWith(user);
-      expect(eventBus.publish).toHaveBeenCalledWith("UserCreated", user);
+      expect(eventBus.publish).toHaveBeenCalledWith({ user });
     });
   });
 
   describe("publish", () => {
     it("should publish an event using the event bus", () => {
-      const event: EventTypes = "UserCreated";
-      const data = {
+      const user = {
         id: "1",
         name: "John Doe",
         email: "whatever@email.com",
@@ -48,9 +46,9 @@ describe("UserRegister", () => {
 
       jest.spyOn(eventBus, "publish").mockImplementation(() => {});
 
-      userRegister.publish(event, data);
+      userRegister.publish(user);
 
-      expect(eventBus.publish).toHaveBeenCalledWith(event, data);
+      expect(eventBus.publish).toHaveBeenCalledWith({ user });
     });
   });
 });
