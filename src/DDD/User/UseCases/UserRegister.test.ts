@@ -1,7 +1,7 @@
 import { UserRegister } from "./UserRegister";
 import { EventBus } from "../../Shared/EventBus/EventBus";
 import { UserService } from "../Services/UserService";
-import { UserModel } from "../interfaces/UserModel";
+import { User } from "../Entities/User";
 
 describe("UserRegister", () => {
   let userRegister: UserRegister;
@@ -16,7 +16,7 @@ describe("UserRegister", () => {
 
   describe("register", () => {
     it("should create a user and publish UserCreated event", async () => {
-      const user: UserModel = {
+      const user: User = {
         id: "1",
         name: "John Doe",
         email: "whatever@email.com",
@@ -46,7 +46,7 @@ describe("UserRegister", () => {
 
       jest.spyOn(eventBus, "publish").mockImplementation(() => {});
 
-      userRegister.publish(user);
+      userRegister.publishUserCreatedEvent(user);
 
       expect(eventBus.publish).toHaveBeenCalledWith({ user });
     });

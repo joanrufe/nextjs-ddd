@@ -1,3 +1,3 @@
-import { User } from "@prisma/client";
+import { User } from "../Entities/User";
 
-export type UserModel = User;
+export type UserModel = Omit<User, "id" | "notifications">;

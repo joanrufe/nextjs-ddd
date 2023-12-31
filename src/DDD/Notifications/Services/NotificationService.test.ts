@@ -1,12 +1,13 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaService } from "@/DDD/Shared/PrismaService/PrismaService";
+import { prismaMock } from "../../__mocks__/jest.setup";
 import { NotificationService } from "./NotificationService";
 
 describe("NotificationService", () => {
   let notificationService: NotificationService;
-  let prisma: PrismaClient;
+  let prisma: PrismaService;
 
   beforeEach(() => {
-    prisma = new PrismaClient();
+    prisma = prismaMock;
     notificationService = new NotificationService(prisma);
   });
 

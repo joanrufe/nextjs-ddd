@@ -2,12 +2,12 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import Email from "next-auth/providers/email";
-import prisma from "../../../../lib/prisma";
+import { prismaSingleton } from "@/DDD";
 import { UserModel, userRegister } from "@/DDD";
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
-  adapter: PrismaAdapter(prisma) as Adapter,
+  adapter: PrismaAdapter(prismaSingleton) as Adapter,
   providers: [
     Email({
       server: {
@@ -27,7 +27,10 @@ export const authOptions: NextAuthOptions = {
   events: {
     createUser: async ({ user }) => {
       // Here should publish domain event
-      userRegister.publish(user as UserModel);
+      userRegister.publishUserCreatedEvent({
+        ...user,
+        emailVerified: null,
+      } as UserModel);
     },
   },
   pages: {

@@ -1,4 +1,4 @@
-import prismaSingleton from "../../../../lib/prisma";
+import { prismaSingleton } from "../../";
 
 export class NotificationService {
   constructor(private readonly prisma = prismaSingleton) {}
