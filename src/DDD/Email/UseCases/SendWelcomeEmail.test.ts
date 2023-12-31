@@ -26,7 +26,7 @@ describe("SendWelcomeEmail", () => {
 
   describe("onUserCreated", () => {
     it("should send a welcome email when a user is created", async () => {
-      const data = {
+      const user = {
         id: "1",
         name: "John Doe",
         email: "john.doe@example.com",
@@ -35,12 +35,12 @@ describe("SendWelcomeEmail", () => {
       };
       const sendEmailSpy = jest.spyOn(emailService, "sendEmail");
 
-      await sendWelcomeEmail.onUserCreated(data);
+      await sendWelcomeEmail.onUserCreated({ user });
 
       expect(sendEmailSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          html: `<p>Welcome to the app, ${data.name}!</p><p>Thanks for joining us!</p>`,
-          to: data.email,
+          html: `<p>Welcome to the app, ${user.name}!</p><p>Thanks for joining us!</p>`,
+          to: user.email,
           from: process.env.EMAIL_FROM,
           subject: "Welcome to the app!",
         })
@@ -48,7 +48,7 @@ describe("SendWelcomeEmail", () => {
     });
 
     it("should throw an error if no email is provided", async () => {
-      const data = {
+      const user = {
         id: "1",
         name: "John Doe",
         email: null,
@@ -58,7 +58,7 @@ describe("SendWelcomeEmail", () => {
       const sendEmailSpy = jest.spyOn(emailService, "sendEmail");
       const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
 
-      await sendWelcomeEmail.onUserCreated(data);
+      await sendWelcomeEmail.onUserCreated({ user });
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         new Error("No email provided")
@@ -68,7 +68,7 @@ describe("SendWelcomeEmail", () => {
     });
 
     it("should throw an error if EMAIL_FROM environment variable is not defined", async () => {
-      const data = {
+      const user = {
         id: "1",
         name: "John Doe",
         email: "john.doe@example.com",
@@ -82,7 +82,7 @@ describe("SendWelcomeEmail", () => {
 
       sendWelcomeEmail = new SendWelcomeEmail(eventBus, emailService);
 
-      await expect(sendWelcomeEmail.onUserCreated(data));
+      await expect(sendWelcomeEmail.onUserCreated({ user }));
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         new Error("EMAIL_FROM environment variable is not defined")
@@ -92,7 +92,7 @@ describe("SendWelcomeEmail", () => {
     });
 
     it("should catch and log any errors thrown during email sending", async () => {
-      const data = {
+      const user = {
         id: "1",
         name: "John Doe",
         email: "john.doe@example.com",
@@ -104,11 +104,11 @@ describe("SendWelcomeEmail", () => {
 
       sendEmailSpy.mockRejectedValueOnce(new Error("Failed to send email"));
 
-      await sendWelcomeEmail.onUserCreated(data);
+      await sendWelcomeEmail.onUserCreated({ user });
 
       expect(sendEmailSpy).toHaveBeenCalledWith({
-        html: `<p>Welcome to the app, ${data.name}!</p><p>Thanks for joining us!</p>`,
-        to: data.email,
+        html: `<p>Welcome to the app, ${user.name}!</p><p>Thanks for joining us!</p>`,
+        to: user.email,
         from: process.env.EMAIL_FROM,
         subject: "Welcome to the app!",
       });

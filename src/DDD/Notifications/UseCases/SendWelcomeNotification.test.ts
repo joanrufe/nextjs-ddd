@@ -35,7 +35,7 @@ describe("SendWelcomeNotification", () => {
         .spyOn(notificationService, "createNotification")
         .mockImplementation(async (..._args) => {});
 
-      sendWelcomeNotification.onUserCreated(user);
+      sendWelcomeNotification.onUserCreated({ user });
 
       expect(createNotificationSpy).toHaveBeenCalledWith(
         user.id,
@@ -55,7 +55,7 @@ describe("SendWelcomeNotification", () => {
       .spyOn(notificationService, "createNotification")
       .mockImplementation(async (..._args) => {});
 
-    sendWelcomeNotification.onUserCreated(user);
+    sendWelcomeNotification.onUserCreated({ user });
 
     expect(createNotificationSpy).toHaveBeenCalledWith(
       user.id,

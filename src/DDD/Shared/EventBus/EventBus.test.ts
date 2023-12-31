@@ -102,7 +102,10 @@ describe("EventBus", () => {
       eventBus.subscribe(MyUserCreatedEvent.name, handler, subscriberClass);
       eventBus.publish(event);
 
-      expect(console.log).toHaveBeenCalledWith("📢 Publishing event: ", event);
+      expect(console.log).toHaveBeenCalledWith(
+        "📢 Publishing event: ",
+        MyUserCreatedEvent.name
+      );
       expect(console.log).toHaveBeenCalledWith(
         "🏭 Subscriber class: ",
         subscriberClass,
