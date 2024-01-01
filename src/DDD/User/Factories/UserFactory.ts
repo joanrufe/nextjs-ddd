@@ -4,7 +4,7 @@ import { CreateUserDTO } from "../interfaces/CreateUserDTO";
 import { UserNotificationModel } from "../interfaces/UserNotificationModel";
 
 export function createUser(
-  user?: CreateUserDTO | { id?: string },
+  user?: Partial<CreateUserDTO> | { id?: string },
   notifications?: UserNotificationModel[]
 ): User {
   return new User(

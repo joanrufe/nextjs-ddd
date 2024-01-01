@@ -9,7 +9,7 @@ export class User implements PrismaUser {
   image: string | null;
 
   // Aggregate entities
-  notifications?: UserNotification[];
+  notifications?: UserNotification[] | null;
 
   constructor(user: PrismaUser, notifications?: UserNotification[]) {
     this.id = user.id;
@@ -20,5 +20,25 @@ export class User implements PrismaUser {
 
     // Aggregate entities
     this.notifications = notifications;
+  }
+
+  toPrimitives():
+    | PrismaUser
+    | {
+        notifications?:
+          | ReturnType<typeof UserNotification.prototype.toPrimitives>[]
+          | null;
+      } {
+    return {
+      id: this.id,
+      name: this.name,
+      email: this.email,
+      emailVerified: this.emailVerified,
+      image: this.image,
+      notifications:
+        this.notifications?.map((notification) =>
+          notification.toPrimitives()
+        ) || null,
+    };
   }
 }

@@ -1,7 +1,7 @@
 import { SendWelcomeNotification } from "./SendWelcomeNotification";
 import { NotificationService } from "../Services/NotificationService";
-import { User } from "@/DDD/User/Entities/User";
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
+import { createUser } from "@/DDD/User/Factories/UserFactory";
 
 describe("SendWelcomeNotification", () => {
   let sendWelcomeNotification: SendWelcomeNotification;
@@ -23,13 +23,7 @@ describe("SendWelcomeNotification", () => {
 
   describe("onUserCreated", () => {
     it("should create a welcome notification with the user's ID and name", () => {
-      const user: User = {
-        id: "123",
-        name: "John Doe",
-        email: "john.doe@example.com",
-        image: "https://example.com/image.png",
-        emailVerified: null,
-      };
+      const user = createUser();
 
       const createNotificationSpy = jest
         .spyOn(notificationService, "createNotification")
@@ -44,13 +38,9 @@ describe("SendWelcomeNotification", () => {
     });
   });
   it("should create a welcome notification with the email if no name is provided", () => {
-    const user: User = {
-      id: "123",
+    const user = createUser({
       name: null,
-      email: "john.doe@example.com",
-      image: "https://example.com/image.png",
-      emailVerified: null,
-    };
+    });
     const createNotificationSpy = jest
       .spyOn(notificationService, "createNotification")
       .mockImplementation(async (..._args) => {});
