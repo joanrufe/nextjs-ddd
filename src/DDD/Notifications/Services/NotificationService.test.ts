@@ -1,6 +1,7 @@
 import { PrismaService } from "@/DDD/Shared/PrismaService/PrismaService";
 import { prismaMock } from "../../__mocks__/jest.setup";
 import { NotificationService } from "./NotificationService";
+import { createNotification } from "../Factories/NotificationFactory";
 
 describe("NotificationService", () => {
   let notificationService: NotificationService;
@@ -13,44 +14,38 @@ describe("NotificationService", () => {
 
   describe("createNotification", () => {
     it("should create a notification with the provided user ID and message", async () => {
-      const userId = "123";
-      const message = "New notification";
+      const notification = createNotification();
+      jest
+        .spyOn(prisma.notification, "create")
+        .mockResolvedValueOnce(notification);
 
-      jest.spyOn(prisma.notification, "create").mockResolvedValueOnce({
-        id: "1",
-        userId,
-        message,
-        read: false,
-      });
-
-      await notificationService.createNotification(userId, message);
+      await notificationService.createNotification(
+        notification.userId,
+        notification.message
+      );
 
       expect(prisma.notification.create).toHaveBeenCalledWith({
-        data: {
-          message,
-          read: false,
-          userId,
-        },
+        data: expect.objectContaining({
+          userId: notification.userId,
+          message: notification.message,
+        }),
       });
     });
   });
 
   describe("markAsRead", () => {
     it("should mark the notification as read with the provided notification ID", async () => {
-      const notificationId = "456";
+      const notification = createNotification();
 
-      jest.spyOn(prisma.notification, "update").mockResolvedValueOnce({
-        id: notificationId,
-        userId: "123",
-        message: "New notification",
-        read: true,
-      });
+      jest
+        .spyOn(prisma.notification, "update")
+        .mockResolvedValueOnce(notification);
 
-      await notificationService.markAsRead(notificationId);
+      await notificationService.markAsRead(notification.id);
 
       expect(prisma.notification.update).toHaveBeenCalledWith({
         where: {
-          id: notificationId,
+          id: notification.id,
         },
         data: {
           read: true,

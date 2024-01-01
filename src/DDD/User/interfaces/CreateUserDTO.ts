@@ -1,4 +1,4 @@
-import { User } from "@/DDD";
+import { User } from "../Entities/User";
 
-// Omit id and notifications
-export type CreateEntityDTO = Omit<User, "id" | "notifications">;
+// Omit id and notifications fields and all methods
+export type CreateUserDTO = Omit<User, "id" | "notifications">;

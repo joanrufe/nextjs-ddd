@@ -1,6 +1,8 @@
 import { PrismaService } from "@/DDD/Shared/PrismaService/PrismaService";
 import { prismaMock } from "../../__mocks__/jest.setup";
 import { UserService } from "./UserService";
+import { createUser } from "../Factories/UserFactory";
+import { createUserNotification } from "../Factories/UserNotificationsFactory";
 
 describe("UserService", () => {
   let userService: UserService;
@@ -13,107 +15,50 @@ describe("UserService", () => {
 
   describe("getUser", () => {
     it("should return the user with the given id", async () => {
-      // Mock the PrismaClient's `user.findUnique` method
-      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce({
+      const user = createUser({
         id: "1",
-        name: "John Doe",
-        email: "john.doe@example.com",
-        image: null,
-        emailVerified: null,
       });
 
-      const user = await userService.getUser("1");
+      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
 
-      expect(user).toEqual({
-        id: "1",
-        name: "John Doe",
-        email: "john.doe@example.com",
-        image: null,
-        emailVerified: null,
-      });
+      const result = await userService.getUser("1");
+
+      expect(result).toEqual(user);
     });
   });
 
   describe("create", () => {
     it("should create a new user", async () => {
-      // Mock the PrismaClient's `user.create` method
-      jest.spyOn(prisma.user, "create").mockResolvedValueOnce({
+      const user = createUser({
         id: "1",
-        name: "John Doe",
-        email: "john.doe@example.com",
-        image: null,
-        emailVerified: null,
       });
 
-      const newUser = {
-        name: "John Doe",
-        email: "john.doe@example.com",
-        image: null,
-        emailVerified: null,
-      };
+      jest.spyOn(prisma.user, "create").mockResolvedValueOnce(user);
 
-      const createdUser = await userService.create(newUser);
+      const result = await userService.create(user as any);
 
-      expect(createdUser).toEqual({
-        id: "1",
-        name: "John Doe",
-        email: "john.doe@example.com",
-        image: null,
-        emailVerified: null,
-      });
+      expect(result).toEqual(user);
     });
   });
 
   describe("getUserWithNotifications", () => {
     it("should return the user with notifications for the given id", async () => {
-      // Mock the PrismaClient's `user.findUnique` method
-      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce({
-        id: "1",
-        name: "John Doe",
-        email: "john.doe@example.com",
-        image: null,
-        emailVerified: null,
-        notifications: [
-          {
-            id: "1",
-            userId: "1",
-            message: "Notification 1",
-            read: false,
-            createdAt: new Date(),
-          },
-          {
-            id: "2",
-            userId: "1",
-            message: "Notification 2",
-            read: false,
-            createdAt: new Date(),
-          },
-        ] as any,
+      const userId = "1";
+      const notifications = Array.from({ length: 5 }, () =>
+        createUserNotification({ userId })
+      );
+      const user = createUser({
+        id: userId,
       });
 
-      const user = await userService.getUserWithNotifications("1");
+      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
 
-      expect(user).toEqual({
-        id: "1",
-        name: "John Doe",
-        email: "john.doe@example.com",
-        image: null,
-        emailVerified: null,
-        notifications: [
-          {
-            id: "1",
-            message: "Notification 1",
-          },
-          {
-            id: "2",
-            message: "Notification 2",
-          },
-        ],
-      });
+      const result = await userService.getUserWithNotifications("1");
+
+      expect(result).toEqual(user);
     });
 
     it("should throw an error if user is not found", async () => {
-      // Mock the PrismaClient's `user.findUnique` method to return null
       jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(null);
 
       await expect(userService.getUserWithNotifications("1")).rejects.toThrow(

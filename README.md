@@ -1,4 +1,4 @@
-This is an opinionated example of how to approach to a DDD like architecture in a NextJS project. This is very much opinionated and it's not meant to be a guide, but rather a way to explore how to simplify the overhead of a DDD architecture.
+This is an example of how to approach to a DDD like architecture in a NextJS project. This is very much opinionated and it's not meant to be a guide, but rather a way to explore how to simplify the overhead of a DDD architecture.
 
 Key points:
 

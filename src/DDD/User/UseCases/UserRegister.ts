@@ -2,7 +2,7 @@ import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
 import { UserService } from "../Services/UserService";
 
 import { UserCreatedEvent } from "../Events/UserCreatedEvent";
-import { CreateEntityDTO } from "../interfaces/CreateUserDTO";
+import { CreateUserDTO } from "../interfaces/CreateUserDTO";
 import { UserModel } from "../interfaces/UserModel";
 
 export class UserRegister {
@@ -14,7 +14,7 @@ export class UserRegister {
     this.userService = userService;
   }
 
-  async register(user: CreateEntityDTO): Promise<void> {
+  async register(user: CreateUserDTO): Promise<void> {
     const createdUser = await this.userService.create(user);
     this.publishUserCreatedEvent(createdUser);
   }

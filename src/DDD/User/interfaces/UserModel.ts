@@ -1,3 +1,4 @@
 import { User } from "../Entities/User";
 
-export type UserModel = Omit<User, "id" | "notifications">;
+// Include only fields, no methods or aggregated entities
+export type UserModel = Omit<User, "notifications">;

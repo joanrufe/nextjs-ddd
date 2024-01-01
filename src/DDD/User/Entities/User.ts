@@ -11,7 +11,7 @@ export class User implements PrismaUser {
   // Aggregate entities
   notifications?: UserNotification[];
 
-  constructor(user: User, notifications?: UserNotification[]) {
+  constructor(user: PrismaUser, notifications?: UserNotification[]) {
     this.id = user.id;
     this.name = user.name;
     this.email = user.email;

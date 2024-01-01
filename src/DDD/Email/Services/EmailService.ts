@@ -1,11 +1,5 @@
 import sendgridModule, { MailService } from "@sendgrid/mail";
-
-interface RequiredEmailData {
-  to: string;
-  from: string;
-  subject: string;
-  html: string;
-}
+import { RequiredEmailData } from "../interfaces/RequiredEmailData";
 
 export class EmailService {
   constructor(private readonly sendgrid: MailService = sendgridModule) {
