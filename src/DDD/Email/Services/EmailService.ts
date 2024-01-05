@@ -10,7 +10,7 @@ export class EmailService {
 
     this.sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
   }
-  async sendEmail(email: RequiredEmailData) {
-    await this.sendgrid.send(email);
+  async sendEmail(emailData: RequiredEmailData) {
+    await this.sendgrid.send(emailData);
   }
 }

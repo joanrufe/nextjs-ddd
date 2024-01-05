@@ -1,19 +1,18 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { prismaSingleton } from "../../";
 import { User } from "../Entities/User";
-import { UserNotification } from "../Entities/UserNotification";
 
 export class UserService {
   constructor(private readonly prisma: PrismaClient = prismaSingleton) {}
 
-  async getUser(id: string): Promise<User> {
+  async findOne(id: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         id,
       },
     });
     if (!user) {
-      throw new Error("User not found");
+      return null;
     }
     return new User(user);
   }
@@ -40,25 +39,5 @@ export class UserService {
       },
     });
     return new User(updatedUser);
-  }
-
-  async getUserWithNotifications(id: string): Promise<User> {
-    const userFromDB = await this.prisma.user.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        notifications: true,
-      },
-    });
-    if (!userFromDB) {
-      throw new Error("User not found");
-    }
-    const { notifications, ...user } = userFromDB;
-    const userNotifications = notifications?.map(
-      (notification) => new UserNotification(notification)
-    );
-
-    return new User(user, userNotifications);
   }
 }

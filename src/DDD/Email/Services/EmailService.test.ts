@@ -6,14 +6,12 @@ describe("EmailService", () => {
   describe("sendEmail", () => {
     it("should send an email using the sendgrid service", async () => {
       process.env.SENDGRID_API_KEY = "test";
-      jest.spyOn(sendgridModule, "setApiKey").mockImplementation(() => {});
-      jest
-        .spyOn(sendgridModule, "send")
-        .mockImplementation(async (..._args: any) => ({} as any));
+      jest.spyOn(sendgridModule, "setApiKey").mockReturnValueOnce();
+      jest.spyOn(sendgridModule, "send").mockResolvedValueOnce({} as any);
 
       const emailData = createEmail();
 
-      const emailService = new EmailService();
+      const emailService = new EmailService(sendgridModule);
       await emailService.sendEmail(emailData);
 
       expect(sendgridModule.send).toHaveBeenCalledWith(emailData);
@@ -22,7 +20,7 @@ describe("EmailService", () => {
     it("should throw an error if SENDGRID_API_KEY is not defined", async () => {
       delete process.env.SENDGRID_API_KEY;
 
-      await expect(() => new EmailService()).toThrow(
+      expect(() => new EmailService(sendgridModule)).toThrow(
         "SENDGRID_API_KEY is not defined"
       );
     });

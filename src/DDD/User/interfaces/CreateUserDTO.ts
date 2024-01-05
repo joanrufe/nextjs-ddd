@@ -1,4 +1,4 @@
-import { User } from "../Entities/User";
+import { UserModel } from "./UserModel";
 
 // Omit id and notifications fields and all methods
-export type CreateUserDTO = Omit<User, "id" | "notifications" | "toPrimitives">;
+export type CreateUserDTO = Omit<UserModel, "id">;

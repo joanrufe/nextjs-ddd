@@ -21,7 +21,7 @@ describe("UserService", () => {
 
       jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
 
-      const result = await userService.getUser("1");
+      const result = await userService.findOne("1");
 
       expect(result).toEqual(user);
 
@@ -39,7 +39,7 @@ describe("UserService", () => {
         id: "1",
       });
 
-      const { id, notifications, ...userWithoutId } = user;
+      const { id, ...userWithoutId } = user;
 
       jest.spyOn(prisma.user, "create").mockResolvedValueOnce(user);
 
@@ -99,43 +99,6 @@ describe("UserService", () => {
         },
       });
       expect(result).toEqual(updatedUser);
-    });
-  });
-
-  describe("getUserWithNotifications", () => {
-    it("should return the user with notifications for the given id", async () => {
-      const userId = "1";
-      const notifications = Array.from({ length: 5 }, () =>
-        createUserNotification({ userId })
-      );
-      const user = createUser(
-        {
-          id: userId,
-        },
-        notifications
-      );
-
-      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
-
-      const result = await userService.getUserWithNotifications("1");
-
-      expect(prisma.user.findUnique).toHaveBeenCalledWith({
-        where: {
-          id: userId,
-        },
-        include: {
-          notifications: true,
-        },
-      });
-      expect(result).toEqual(user);
-    });
-
-    it("should throw an error if user is not found", async () => {
-      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(null);
-
-      await expect(userService.getUserWithNotifications("1")).rejects.toThrow(
-        "User not found"
-      );
     });
   });
 });
