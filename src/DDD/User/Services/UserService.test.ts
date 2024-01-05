@@ -15,19 +15,20 @@ describe("UserService", () => {
 
   describe("getUser", () => {
     it("should return the user with the given id", async () => {
+      const email = "me@example.com";
       const user = createUser({
-        id: "1",
+        email,
       });
 
       jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
 
-      const result = await userService.findOne("1");
+      const result = await userService.findOne(email);
 
       expect(result).toEqual(user);
 
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
         where: {
-          id: "1",
+          email,
         },
       });
     });

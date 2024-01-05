@@ -9,13 +9,19 @@ export class UserProfilerUpdater {
     private readonly userService: UserService = new UserService()
   ) {}
 
-  async updateFields({ id, fields }: { id: string; fields: UpdateUserDTO }) {
-    const user = await this.userService.findOne(id);
+  async updateFields({
+    email,
+    fields,
+  }: {
+    email: string;
+    fields: UpdateUserDTO;
+  }) {
+    const user = await this.userService.findOne(email);
     if (!user) {
       throw new Error("User not found");
     }
 
-    const updatedUser = await this.userService.update(id, fields);
+    const updatedUser = await this.userService.update(user.id, fields);
 
     const userUpdatedEvent = new UserUpdatedEvent(user, updatedUser);
 

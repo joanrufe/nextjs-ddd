@@ -1,9 +1,59 @@
-export default function HomePage() {
+import { getUserProfile } from "@/DDD";
+import { UserProfileData } from "@/shared-backend-frontend/api/GetUserProfile";
+import { UserProfileUpdateResponse } from "@/shared-backend-frontend/api/UserProfileUpdate";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
+import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+interface UpdatePageProps {
+  user: UserProfileData;
+}
+
+type UserUpdateFormInputs = UserProfileData;
+
+export default function UpdatePage({ user }: UpdatePageProps) {
+  const [serverError, setServerError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserUpdateFormInputs>({
+    defaultValues: {
+      name: user.name ?? "",
+      email: user.email ?? "",
+    },
+  });
+  const onSubmit: SubmitHandler<UserUpdateFormInputs> = async (data) => {
+    try {
+      const response = await fetch("/api/user/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: user.email, fields: data }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result: UserProfileUpdateResponse = await response.json();
+      if ("error" in result) {
+        setServerError(result.error);
+      }
+      // Handle successful update (e.g., show a success message or redirect)
+    } catch (error) {
+      console.error("Error:", error);
+      setServerError("Failed to update user profile. Please try again.");
+    }
+  };
+
   return (
     <div className="mt-28 flex flex-col items-center justify-center">
       <h1 className="text-4xl font-bold mb-8">Update Your Profile</h1>
 
-      <form className="w-full max-w-lg">
+      <form className="w-full max-w-lg" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <label
@@ -14,11 +64,13 @@ export default function HomePage() {
             </label>
             <input
               className="appearance-none block w-full bg-gray-800 text-white border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-600"
-              id="name"
-              type="text"
-              placeholder="Jane Doe"
+              placeholder="Write your full name here"
+              {...register("name", { required: "Name is required" })}
             />
           </div>
+          {errors.name && (
+            <p className="text-red-500 text-xs italic">{errors.name.message}</p>
+          )}
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
@@ -30,33 +82,27 @@ export default function HomePage() {
             </label>
             <input
               className="appearance-none block w-full bg-gray-800 text-white border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-gray-600"
-              id="email"
-              type="email"
               placeholder="email@example.com"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: "Entered value does not match email format",
+                },
+              })}
             />
           </div>
-        </div>
-        <div className="flex flex-wrap -mx-3 mb-6">
-          <div className="w-full px-3">
-            <label
-              className="block uppercase tracking-wide text-xs font-bold mb-2"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              className="appearance-none block w-full bg-gray-800 text-white border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-gray-600"
-              id="password"
-              type="password"
-              placeholder="******************"
-            />
-          </div>
+          {errors.email && (
+            <p className="text-red-500 text-xs italic">
+              {errors.email.message}
+            </p>
+          )}
         </div>
         <div className="flex flex-wrap -mx-3 mb-2">
           <div className="w-full px-3 text-right">
             <button
               className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-              type="button"
+              type="submit"
             >
               Update
             </button>
@@ -66,3 +112,21 @@ export default function HomePage() {
     </div>
   );
 }
+export const getServerSideProps = (async (context) => {
+  const session = await getSession(context);
+
+  if (!session?.user?.email) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  const user = await getUserProfile.byEmail({ email: session.user.email });
+
+  return {
+    props: { user },
+  };
+}) satisfies GetServerSideProps<UpdatePageProps>;

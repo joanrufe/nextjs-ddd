@@ -36,8 +36,13 @@ function UserProfileHeader(session: { user: Session["user"] }) {
     <div className="flex items-center">
       <NotificationBell notifications={notifications} />
       <div className="ml-4">
+        <Link
+          className="underline text-blue-300 text-sm font-medium"
+          href="/profile/update"
+        >
+          Profile
+        </Link>
         <p className="text-sm font-medium">{session.user?.name}</p>
-        <p className="text-xs">{session.user?.email}</p>
       </div>
     </div>
   );

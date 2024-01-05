@@ -12,28 +12,29 @@ describe("GetUserProfile", () => {
   });
 
   describe("getUserProfile", () => {
-    it("should return the user profile with the given id", async () => {
-      const userId = "1";
+    it("should return the user profile with the given id but omit emailVerified", async () => {
+      const email = "user@example.com";
       const user = createUser();
 
       jest.spyOn(userService, "findOne").mockResolvedValueOnce(user);
 
-      const result = await getUserProfile.getUserProfile({ id: userId });
+      const result = await getUserProfile.byEmail({ email });
 
-      expect(userService.findOne).toHaveBeenCalledWith(userId);
-      expect(result).toEqual(user.toPrimitives());
+      expect(userService.findOne).toHaveBeenCalledWith(email);
+      const { emailVerified: _, ...userData } = user.toPrimitives();
+      expect(result).toEqual(userData);
     });
 
     it("should throw an error if user is not found", async () => {
-      const userId = "1";
+      const email = "user@example.com";
 
       jest.spyOn(userService, "findOne").mockResolvedValueOnce(null);
 
-      await expect(
-        getUserProfile.getUserProfile({ id: userId })
-      ).rejects.toThrow("User not found");
+      await expect(getUserProfile.byEmail({ email })).rejects.toThrow(
+        "User not found"
+      );
 
-      expect(userService.findOne).toHaveBeenCalledWith(userId);
+      expect(userService.findOne).toHaveBeenCalledWith(email);
     });
   });
 });

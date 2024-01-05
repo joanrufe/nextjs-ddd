@@ -20,10 +20,9 @@ describe("UserProfilerUpdater", () => {
     it("should update the user fields and publish a UserUpdatedEvent", async () => {
       const user = createUser();
       // Arrange
-      const id = "1";
+      const email = "jane.doe@example.com";
       const fields: UpdateUserDTO = {
         name: "Jane Doe",
-        email: "jane.doe@example.com",
       };
 
       const updatedUser = createUser({ ...user, ...fields });
@@ -35,23 +34,22 @@ describe("UserProfilerUpdater", () => {
 
       // Act
       const result = await userProfilerUpdater.updateFields({
-        id,
+        email,
         fields,
       });
 
       // Assert
-      expect(userService.findOne).toHaveBeenCalledWith(id);
-      expect(userService.update).toHaveBeenCalledWith(id, fields);
+      expect(userService.findOne).toHaveBeenCalledWith(email);
+      expect(userService.update).toHaveBeenCalledWith(updatedUser.id, fields);
       expect(eventBus.publish).toHaveBeenCalledWith(userUpdatedEvent);
       expect(result).toEqual(updatedUser.toPrimitives());
     });
 
     it("should throw an error if the user is not found", async () => {
       // Arrange
-      const id = "1";
+      const email = "jane.doe@example.com";
       const fields: UpdateUserDTO = {
         name: "Jane Doe",
-        email: "jane.doe@example.com",
         image: "https://example.com/image.png",
       };
 
@@ -59,7 +57,7 @@ describe("UserProfilerUpdater", () => {
 
       // Act & Assert
       await expect(
-        userProfilerUpdater.updateFields({ id, fields })
+        userProfilerUpdater.updateFields({ email, fields })
       ).rejects.toThrow("User not found");
     });
   });

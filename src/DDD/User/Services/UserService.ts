@@ -5,10 +5,10 @@ import { User } from "../Entities/User";
 export class UserService {
   constructor(private readonly prisma: PrismaClient = prismaSingleton) {}
 
-  async findOne(id: string): Promise<User | null> {
+  async findOne(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
-        id,
+        email,
       },
     });
     if (!user) {

@@ -1,0 +1,3 @@
+export type NonOptionalNonNull<T> = {
+  [P in keyof T]: NonNullable<T[P]>;
+};
