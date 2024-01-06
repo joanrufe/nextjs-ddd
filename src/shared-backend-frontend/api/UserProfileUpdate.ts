@@ -6,7 +6,7 @@ export type UserProfileUpdateRequestParams = Parameters<
 
 export type UserProfileUpdateResponse =
   | Awaited<ReturnType<typeof userProfilerUpdater.updateFields>>
-  | { error: string };
+  | { error?: string; validationErrors?: { field: string; message: string }[] };
 
 export type UserProfileUpdateData = Awaited<
   ReturnType<typeof userProfilerUpdater.updateFields>

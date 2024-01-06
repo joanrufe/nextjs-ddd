@@ -2,7 +2,6 @@ import { PrismaService } from "@/DDD/Shared/PrismaService/PrismaService";
 import { prismaMock } from "../../__mocks__/jest.setup";
 import { UserService } from "./UserService";
 import { createUser } from "../Factories/UserFactory";
-import { createUserNotification } from "../Factories/UserNotificationsFactory";
 
 describe("UserService", () => {
   let userService: UserService;
@@ -56,11 +55,16 @@ describe("UserService", () => {
   describe("update", () => {
     it("should update the user name with the given id", async () => {
       const userId = "1";
-      const updatedUser = createUser({
+      const user = createUser({
         id: userId,
-        name: "Jane Doe",
       });
 
+      const updatedUser = {
+        ...user,
+        name: "Jane Doe",
+      };
+
+      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
       jest.spyOn(prisma.user, "update").mockResolvedValueOnce(updatedUser);
 
       const result = await userService.update(userId, { name: "Jane Doe" });
@@ -77,29 +81,56 @@ describe("UserService", () => {
     });
     it("should update several fields of the user with the given id", async () => {
       const userId = "1";
-      const updatedUser = createUser({
+      const user = createUser({
         id: userId,
       });
+      const fieldsToUpdate = {
+        name: "Jane Doe",
+        email: "jane.doe@example.com",
+        image: "https://example.com/image.png",
+      };
+      const updatedUser = {
+        ...user,
+        ...fieldsToUpdate,
+      };
+      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
       jest.spyOn(prisma.user, "update").mockResolvedValueOnce(updatedUser);
-      const name = "Jane Doe";
-      const email = "jane.doe@example.com";
-      const image = "https://example.com/image.png";
       const result = await userService.update(userId, {
-        name,
-        email,
-        image,
+        ...fieldsToUpdate,
       });
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: {
           id: userId,
         },
         data: {
-          name,
-          email,
-          image,
+          ...fieldsToUpdate,
         },
       });
       expect(result).toEqual(updatedUser);
     });
+    it("should throw an error if the user does not exist", async () => {
+      const userId = "1";
+      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(null);
+      await expect(
+        userService.update(userId, { name: "Jane Doe" })
+      ).rejects.toThrow("User not found");
+    });
+    it("should throw EntityValidationError if the user data is invalid", async () => {
+      const userId = "1";
+      const user = createUser({
+        id: userId,
+      });
+      const fieldsToUpdate = {
+        name: "Jane Doe",
+        email: "not-an-email",
+      };
+      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
+      await expect(
+        userService.update(userId, {
+          ...fieldsToUpdate,
+        })
+      ).rejects.toThrow("Validation errors in User");
+    });
+    it.todo("Should test EntityValidationError per field, ");
   });
 });

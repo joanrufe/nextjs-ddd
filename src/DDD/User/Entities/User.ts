@@ -1,11 +1,15 @@
+import { EntityValidationError } from "@/DDD/Shared/Exceptions/EntityValidationError";
 import { User as PrismaUser } from "@prisma/client";
-import { UserNotification } from "./UserNotification";
+import { IsEmail, IsUrl, Length, validate } from "class-validator";
 
 export class User implements PrismaUser {
   id: string;
+  @Length(3, 255, { message: "Name must be at least 3 characters long" })
   name: string | null;
+  @IsEmail({}, { message: "Email is not valid" })
   email: string | null;
   emailVerified: Date | null;
+  @IsUrl({}, { message: "Image must be a valid URL" })
   image: string | null;
 
   constructor(user: PrismaUser) {
@@ -24,5 +28,13 @@ export class User implements PrismaUser {
       emailVerified: this.emailVerified,
       image: this.image,
     };
+  }
+
+  async validate() {
+    await validate(this).then((errors) => {
+      if (errors.length > 0) {
+        throw new EntityValidationError("User", errors);
+      }
+    });
   }
 }

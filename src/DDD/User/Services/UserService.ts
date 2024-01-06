@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { prismaSingleton } from "../../";
+import { UserModel, prismaSingleton } from "../../";
 import { User } from "../Entities/User";
+import { NonOptionalNonNull } from "@/utils/types";
 
 export class UserService {
   constructor(private readonly prisma: PrismaClient = prismaSingleton) {}
@@ -16,10 +17,16 @@ export class UserService {
     }
     return new User(user);
   }
-  async create(user: Prisma.UserCreateArgs["data"]): Promise<User> {
+  async create(userData: Prisma.UserCreateArgs["data"]): Promise<User> {
+    const userDataToValidate = {
+      // id: "not-used",
+      ...userData,
+    } as NonOptionalNonNull<UserModel>;
+    const userVal = new User(userDataToValidate);
+    await userVal.validate();
     const createdUser = await this.prisma.user.create({
       data: {
-        ...user,
+        ...userData,
       },
     });
 
@@ -30,6 +37,21 @@ export class UserService {
     id: string,
     user: Omit<Prisma.UserUpdateArgs["data"], "id">
   ): Promise<User> {
+    const currentUser = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!currentUser) {
+      throw new Error("User not found");
+    }
+    const userDataToValidate = {
+      ...currentUser,
+      ...user,
+      id,
+    } as NonOptionalNonNull<UserModel>;
+    const userVal = new User(userDataToValidate);
+    await userVal.validate();
     const updatedUser = await this.prisma.user.update({
       where: {
         id,

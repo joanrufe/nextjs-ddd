@@ -11,7 +11,7 @@ export class GetUserProfile {
     }
 
     const { emailVerified: _, ...userData } = user.toPrimitives();
-    // Serialize emailVerified to JSON to avoid error
+    // remove emailVerified to avoid Date serialization error
     return { ...userData };
   }
 }

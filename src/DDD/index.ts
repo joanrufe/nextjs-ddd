@@ -10,6 +10,7 @@ import { EventBus } from "./Shared/EventBus/EventBus";
 import { GetUserNotifications } from "./User/UseCases/GetUserNotifications";
 import { UserProfilerUpdater } from "./User/UseCases/UserProfilerUpdater";
 import { GetUserProfile } from "./User/UseCases/GetUserProfile";
+import { EntityValidationError } from "./Shared/Exceptions/EntityValidationError";
 
 // Shared instances
 const eventBusSingleton = new EventBus();
@@ -28,6 +29,7 @@ const getUserProfile = new GetUserProfile();
 // to be public, not the services or any other internal implementation detail
 
 export type { UserModel };
+export { EntityValidationError };
 
 // @TODO Things that would need to be fixed/refactored:
 // - Some of the use cases doesn't need to be exported, but they are because

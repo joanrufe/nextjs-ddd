@@ -18,12 +18,14 @@ export default function UpdatePage({ user }: UpdatePageProps) {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<UserUpdateFormInputs>({
     defaultValues: {
       name: user.name ?? "",
       email: user.email ?? "",
     },
   });
+  console.log(errors);
   const onSubmit: SubmitHandler<UserUpdateFormInputs> = async (data) => {
     try {
       const response = await fetch("/api/user/update", {
@@ -34,14 +36,25 @@ export default function UpdatePage({ user }: UpdatePageProps) {
         body: JSON.stringify({ email: user.email, fields: data }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (response.status === 400) {
+        const result: UserProfileUpdateResponse = await response.json();
+        if ("error" in result && result.error) {
+          if ("validationErrors" in result && result.validationErrors) {
+            for (const validationError of result.validationErrors) {
+              setError(validationError.field as keyof UserUpdateFormInputs, {
+                message: validationError.message,
+              });
+            }
+          } else {
+            setServerError(result.error);
+          }
+        }
+      } else if (response.status === 500) {
+        setServerError("Failed to update user profile. Please try again.");
+      } else if (response.status === 200) {
+        // TODO: show success message
       }
 
-      const result: UserProfileUpdateResponse = await response.json();
-      if ("error" in result) {
-        setServerError(result.error);
-      }
       // Handle successful update (e.g., show a success message or redirect)
     } catch (error) {
       console.error("Error:", error);
