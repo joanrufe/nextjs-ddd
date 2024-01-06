@@ -1,5 +1,5 @@
 import { SendWelcomeEmail } from "./SendWelcomeEmail";
-import { EventBus } from "../../Shared/EventBus/EventBus";
+import { EventBus } from "../../../Shared/EventBus/EventBus";
 import { EmailService } from "../Services/EmailService";
 import sendgridModule from "@sendgrid/mail";
 

@@ -25,7 +25,6 @@ export default function UpdatePage({ user }: UpdatePageProps) {
       email: user.email ?? "",
     },
   });
-  console.log(errors);
   const onSubmit: SubmitHandler<UserUpdateFormInputs> = async (data) => {
     try {
       const response = await fetch("/api/user/update", {

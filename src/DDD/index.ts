@@ -1,7 +1,7 @@
 // use cases
-import { SendWelcomeNotification } from "./Notifications/UseCases/SendWelcomeNotification";
+import { SendWelcomeNotification } from "./Retention/Notifications/UseCases/SendWelcomeNotification";
 import { UserRegister } from "./User/UseCases/UserRegister";
-import { SendWelcomeEmail } from "./Email/UseCases/SendWelcomeEmail";
+import { SendWelcomeEmail } from "./Retention/Email/UseCases/SendWelcomeEmail";
 // public interfaces
 import { UserModel } from "./User/interfaces/UserModel";
 // shared
