@@ -12,7 +12,7 @@ import { UserProfilerUpdater } from "./Shop/User/UseCases/UserProfilerUpdater";
 import { GetUserProfile } from "./Shop/User/UseCases/GetUserProfile";
 import { EntityValidationError } from "./Shared/Exceptions/EntityValidationError";
 import { GetUserRole } from "./Shop/User/UseCases/GetUserRoles";
-import { Roles } from "./Shop/User/Attributes/roles";
+import { Roles } from "./Shared/User/Attributes/roles";
 
 // Shared instances
 const eventBusSingleton = new EventBus();

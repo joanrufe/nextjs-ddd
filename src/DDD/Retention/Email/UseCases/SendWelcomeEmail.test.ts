@@ -2,6 +2,7 @@ import { SendWelcomeEmail } from "./SendWelcomeEmail";
 import { EventBus } from "../../../Shared/EventBus/EventBus";
 import { EmailService } from "../Services/EmailService";
 import sendgridModule from "@sendgrid/mail";
+import { Roles } from "@/DDD/Shared/User/Attributes/roles";
 
 describe("SendWelcomeEmail", () => {
   let sendWelcomeEmail: SendWelcomeEmail;
@@ -32,6 +33,7 @@ describe("SendWelcomeEmail", () => {
         email: "john.doe@example.com",
         image: null,
         emailVerified: null,
+        role: Roles.USER,
       };
       const sendEmailSpy = jest.spyOn(emailService, "sendEmail");
 
@@ -54,6 +56,7 @@ describe("SendWelcomeEmail", () => {
         email: null,
         image: null,
         emailVerified: null,
+        role: Roles.USER,
       };
       const sendEmailSpy = jest.spyOn(emailService, "sendEmail");
       const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
@@ -74,6 +77,7 @@ describe("SendWelcomeEmail", () => {
         email: "john.doe@example.com",
         image: null,
         emailVerified: null,
+        role: Roles.USER,
       };
 
       const sendEmailSpy = jest.spyOn(emailService, "sendEmail");
@@ -98,6 +102,7 @@ describe("SendWelcomeEmail", () => {
         email: "john.doe@example.com",
         image: null,
         emailVerified: null,
+        role: Roles.USER,
       };
       const sendEmailSpy = jest.spyOn(emailService, "sendEmail");
       const consoleErrorSpy = jest.spyOn(console, "error");

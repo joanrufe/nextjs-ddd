@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { User } from "../Entities/User";
 import { CreateUserDTO } from "../interfaces/CreateUserDTO";
-import { Roles } from "../Attributes/roles";
+import { Roles } from "../../../Shared/User/Attributes/roles";
 
 export function createUser(
   user?: Partial<CreateUserDTO> | { id?: string }
