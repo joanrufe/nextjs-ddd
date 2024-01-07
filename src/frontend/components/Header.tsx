@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { useUserNotifications } from "@/frontend/hooks/useUserNotifications";
 import NotificationBell from "./Notifications";
@@ -44,6 +44,13 @@ function UserProfileHeader(session: { user: Session["user"] }) {
         </Link>
         <p className="text-sm font-medium">{session.user?.name}</p>
       </div>
+      {/* logout */}
+      <button
+        onClick={() => signOut()}
+        className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Logout
+      </button>
     </div>
   );
 }

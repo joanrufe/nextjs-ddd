@@ -11,6 +11,8 @@ import { GetUserNotifications } from "./User/UseCases/GetUserNotifications";
 import { UserProfilerUpdater } from "./User/UseCases/UserProfilerUpdater";
 import { GetUserProfile } from "./User/UseCases/GetUserProfile";
 import { EntityValidationError } from "./Shared/Exceptions/EntityValidationError";
+import { GetUserRole } from "./User/UseCases/GetUserRoles";
+import { Roles } from "./User/Attributes/roles";
 
 // Shared instances
 const eventBusSingleton = new EventBus();
@@ -23,11 +25,13 @@ const sendWelcomeEmail = new SendWelcomeEmail(eventBusSingleton);
 const userProfilerUpdater = new UserProfilerUpdater(eventBusSingleton);
 const getUserNotifications = new GetUserNotifications();
 const getUserProfile = new GetUserProfile();
+const getUserRole = new GetUserRole();
 
 // This should be the only file that exports anything from the DDD folder
 // When possible, export only the use cases and interface that are intended
 // to be public, not the services or any other internal implementation detail
 
+export { Roles };
 export type { UserModel };
 export { EntityValidationError };
 
@@ -42,5 +46,6 @@ export {
   getUserNotifications,
   userProfilerUpdater,
   getUserProfile,
+  getUserRole,
 };
 export { prismaSingleton };

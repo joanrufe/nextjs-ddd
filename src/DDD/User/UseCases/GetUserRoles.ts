@@ -1,7 +1,7 @@
 import { UserService } from "../Services/UserService";
 import { GetUserProfileDTO } from "../interfaces/GetUserProfileDTO";
 
-export class GetUserProfile {
+export class GetUserRole {
   constructor(private readonly userService: UserService = new UserService()) {}
 
   async byEmail({ email }: GetUserProfileDTO) {
@@ -10,8 +10,8 @@ export class GetUserProfile {
       return null;
     }
 
-    const { emailVerified: _, role: _r, ...userData } = user.toPrimitives();
-    // remove emailVerified to avoid Date serialization error
-    return { ...userData };
+    const { role } = user.toPrimitives();
+
+    return role;
   }
 }

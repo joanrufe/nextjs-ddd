@@ -1,6 +1,6 @@
 import { EntityValidationError } from "@/DDD/Shared/Exceptions/EntityValidationError";
-import { User as PrismaUser } from "@prisma/client";
-import { IsEmail, IsUrl, Length, validate } from "class-validator";
+import { $Enums, User as PrismaUser } from "@prisma/client";
+import { IsEmail, IsIn, IsUrl, Length, validate } from "class-validator";
 
 export class User implements PrismaUser {
   id: string;
@@ -11,6 +11,8 @@ export class User implements PrismaUser {
   emailVerified: Date | null;
   @IsUrl({}, { message: "Image must be a valid URL" })
   image: string | null;
+  @IsIn(Object.values($Enums.Role), { message: "Role must be USER or ADMIN" })
+  role: $Enums.Role;
 
   constructor(user: PrismaUser) {
     this.id = user.id;
@@ -18,6 +20,7 @@ export class User implements PrismaUser {
     this.email = user.email;
     this.emailVerified = user.emailVerified;
     this.image = user.image;
+    this.role = user.role;
   }
 
   toPrimitives(): PrismaUser {
@@ -27,6 +30,7 @@ export class User implements PrismaUser {
       email: this.email,
       emailVerified: this.emailVerified,
       image: this.image,
+      role: this.role,
     };
   }
 

@@ -5,18 +5,25 @@ import {
   UserProfileUpdateResponse,
 } from "@/shared-backend-frontend/api/UserProfileUpdate";
 
+import { safelyGetServerSession } from "@/utils/auth";
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<UserProfileUpdateResponse>
 ) {
-  const { email, fields } = req.body;
+  const session = await safelyGetServerSession(req);
 
-  if (typeof email !== "string") {
-    return res.status(400).json({ error: "No email provided" });
+  if (!session?.user?.email) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
+  const { fields } = req.body;
+
   try {
-    const params: UserProfileUpdateRequestParams = { email, fields };
+    const params: UserProfileUpdateRequestParams = {
+      email: session.user.email,
+      fields,
+    };
     const userData = await userProfilerUpdater.updateFields(params);
 
     res.status(200).json(userData);

@@ -7,10 +7,10 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface UpdatePageProps {
-  user: UserProfileData;
+  user: NonNullable<UserProfileData>;
 }
 
-type UserUpdateFormInputs = UserProfileData;
+type UserUpdateFormInputs = NonNullable<UserProfileData>;
 
 export default function UpdatePage({ user }: UpdatePageProps) {
   const [serverError, setServerError] = useState("");
@@ -26,13 +26,14 @@ export default function UpdatePage({ user }: UpdatePageProps) {
     },
   });
   const onSubmit: SubmitHandler<UserUpdateFormInputs> = async (data) => {
+    setServerError("");
     try {
       const response = await fetch("/api/user/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: user.email, fields: data }),
+        body: JSON.stringify({ fields: data }),
       });
 
       if (response.status === 400) {
@@ -66,6 +67,13 @@ export default function UpdatePage({ user }: UpdatePageProps) {
       <h1 className="text-4xl font-bold mb-8">Update Your Profile</h1>
 
       <form className="w-full max-w-lg" onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full px-3">
+            {serverError && (
+              <p className="text-red-500 text-xs italic">{serverError}</p>
+            )}
+          </div>
+        </div>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <label
@@ -137,6 +145,15 @@ export const getServerSideProps = (async (context) => {
   }
 
   const user = await getUserProfile.byEmail({ email: session.user.email });
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: { user },

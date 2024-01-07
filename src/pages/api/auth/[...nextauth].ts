@@ -1,8 +1,8 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, Session } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import Email from "next-auth/providers/email";
-import { prismaSingleton } from "@/DDD";
+import { getUserRole, prismaSingleton } from "@/DDD";
 import { UserModel, userRegister } from "@/DDD";
 
 export const authOptions: NextAuthOptions = {
@@ -33,8 +33,17 @@ export const authOptions: NextAuthOptions = {
       } as UserModel);
     },
   },
+  callbacks: {
+    session: async ({ session, user }) => {
+      const role = await getUserRole.byEmail({ email: user.email });
+      if (session.user && role) {
+        session.user.role = role;
+      }
+      return session;
+    },
+  },
   pages: {
-    signIn: "/auth/email-signin",
+    signIn: "/login",
   },
 };
 

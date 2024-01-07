@@ -4,7 +4,7 @@ import type {
 } from "next";
 import { getServerSession } from "next-auth";
 import { getCsrfToken } from "next-auth/react";
-import { authOptions } from "../api/auth/[...nextauth]";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 export default function SignIn({
   csrfToken,
