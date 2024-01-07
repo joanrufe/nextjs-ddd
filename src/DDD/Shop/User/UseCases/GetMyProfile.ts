@@ -1,7 +1,7 @@
 import { UserService } from "../Services/UserService";
 import { GetUserProfileDTO } from "../interfaces/GetUserProfileDTO";
 
-export class GetUserProfile {
+export class GetMyProfile {
   constructor(private readonly userService: UserService = new UserService()) {}
 
   async byEmail({ email }: GetUserProfileDTO) {

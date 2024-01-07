@@ -7,9 +7,9 @@ import { UserModel } from "./Shop/User/interfaces/UserModel";
 // shared
 import { PrismaService } from "./Shared/PrismaService/PrismaService";
 import { EventBus } from "./Shared/EventBus/EventBus";
-import { GetUserNotifications } from "./Shop/User/UseCases/GetUserNotifications";
-import { UserProfilerUpdater } from "./Shop/User/UseCases/UserProfilerUpdater";
-import { GetUserProfile } from "./Shop/User/UseCases/GetUserProfile";
+import { GetMyNotifications } from "./Shop/User/UseCases/GetMyNotifications";
+import { MyProfileUpdater } from "./Shop/User/UseCases/MyProfileUpdater";
+import { GetMyProfile } from "./Shop/User/UseCases/GetMyProfile";
 import { EntityValidationError } from "./Shared/Exceptions/EntityValidationError";
 import { GetUserRole } from "./Shop/User/UseCases/GetUserRoles";
 import { Roles } from "./Shared/User/Attributes/roles";
@@ -22,9 +22,9 @@ const prismaSingleton = new PrismaService();
 const userRegister = new UserRegister(eventBusSingleton);
 const sendWelcomeNotification = new SendWelcomeNotification(eventBusSingleton);
 const sendWelcomeEmail = new SendWelcomeEmail(eventBusSingleton);
-const userProfilerUpdater = new UserProfilerUpdater(eventBusSingleton);
-const getUserNotifications = new GetUserNotifications();
-const getUserProfile = new GetUserProfile();
+const myProfileUpdater = new MyProfileUpdater(eventBusSingleton);
+const getMyNotifications = new GetMyNotifications();
+const getMyProfile = new GetMyProfile();
 const getUserRole = new GetUserRole();
 
 // This should be the only file that exports anything from the DDD folder
@@ -43,9 +43,9 @@ export {
   userRegister,
   sendWelcomeNotification,
   sendWelcomeEmail,
-  getUserNotifications,
-  userProfilerUpdater,
-  getUserProfile,
+  getMyNotifications,
+  myProfileUpdater,
+  getMyProfile,
   getUserRole,
 };
 export { prismaSingleton };

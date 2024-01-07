@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 import { BellIcon } from "@heroicons/react/24/outline";
-import { NotificationsData } from "@/shared-backend-frontend/api/GetUserNotifications";
+import { GetMyNotificationsData } from "@/shared-backend-frontend/api/Shop/User/GetMyNotifications";
 
 interface NotificationBellProps {
-  notifications?: NotificationsData;
+  notifications?: GetMyNotificationsData;
 }
 
 const NotificationBell = ({ notifications }: NotificationBellProps) => {

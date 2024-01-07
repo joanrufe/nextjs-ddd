@@ -1,13 +1,13 @@
 import {
-  NotificationsData,
-  NotificationsResponse,
-} from "@/shared-backend-frontend/api/GetUserNotifications";
+  GetMyNotificationsData,
+  GetMyNotificationsResponse,
+} from "@/shared-backend-frontend/api/Shop/User/GetMyNotifications";
 import { useCallback, useEffect, useState } from "react";
 
 const USER_DATA_URL = `/api/user/notifications`;
 
 export function useUserNotifications(email?: string) {
-  const [notifications, setNotifications] = useState<NotificationsData>();
+  const [notifications, setNotifications] = useState<GetMyNotificationsData>();
 
   const fetchNotifications = useCallback(
     async function () {
@@ -17,7 +17,7 @@ export function useUserNotifications(email?: string) {
       }
       const params = new URLSearchParams({ email });
       const response = await fetch(USER_DATA_URL + "?" + params.toString());
-      const res: NotificationsResponse = await response.json();
+      const res: GetMyNotificationsResponse = await response.json();
       if ("error" in res) {
         console.error(res.error);
       } else {

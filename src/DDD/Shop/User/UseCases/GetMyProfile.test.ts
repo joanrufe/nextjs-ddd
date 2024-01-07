@@ -1,17 +1,17 @@
-import { GetUserProfile } from "./GetUserProfile";
+import { GetMyProfile } from "./GetMyProfile";
 import { UserService } from "../Services/UserService";
 import { createUser } from "../Factories/UserFactory";
 
-describe("GetUserProfile", () => {
-  let getUserProfile: GetUserProfile;
+describe("GetMyProfile", () => {
+  let getUserProfile: GetMyProfile;
   let userService: UserService;
 
   beforeEach(() => {
     userService = new UserService();
-    getUserProfile = new GetUserProfile(userService);
+    getUserProfile = new GetMyProfile(userService);
   });
 
-  describe("getUserProfile", () => {
+  describe("byEmail", () => {
     it("should return the user profile editable fields", async () => {
       const email = "user@example.com";
       const user = createUser();

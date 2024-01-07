@@ -1,19 +1,19 @@
-import { UserProfilerUpdater } from "./UserProfilerUpdater";
+import { MyProfileUpdater } from "./MyProfileUpdater";
 import { UserService } from "../Services/UserService";
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
 import { UserUpdatedEvent } from "../Events/UserUpdatedEvent";
 import { UpdateUserDTO } from "../interfaces/UpdateUserDTO";
 import { createUser } from "../Factories/UserFactory";
 
-describe("UserProfilerUpdater", () => {
-  let userProfilerUpdater: UserProfilerUpdater;
+describe("MyProfileUpdater", () => {
+  let userProfilerUpdater: MyProfileUpdater;
   let userService: UserService;
   let eventBus: EventBus;
 
   beforeEach(() => {
     userService = new UserService();
     eventBus = new EventBus();
-    userProfilerUpdater = new UserProfilerUpdater(eventBus, userService);
+    userProfilerUpdater = new MyProfileUpdater(eventBus, userService);
   });
 
   describe("updateFields", () => {

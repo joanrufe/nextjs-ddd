@@ -3,7 +3,7 @@ import { UserUpdatedEvent } from "../Events/UserUpdatedEvent";
 import { UserService } from "../Services/UserService";
 import { UpdateUserDTO } from "../interfaces/UpdateUserDTO";
 
-export class UserProfilerUpdater {
+export class MyProfileUpdater {
   constructor(
     private readonly evenBus: EventBus,
     private readonly userService: UserService = new UserService()

@@ -1,16 +1,16 @@
-import { getUserProfile } from "@/DDD";
-import { UserProfileData } from "@/shared-backend-frontend/api/GetUserProfile";
-import { UserProfileUpdateResponse } from "@/shared-backend-frontend/api/UserProfileUpdate";
+import { getMyProfile } from "@/DDD";
+import { GetMyProfileData } from "@/shared-backend-frontend/api/Shop/User/GetMyProfile";
+import { MyProfileUpdaterResponse } from "@/shared-backend-frontend/api/Shop/User/MyProfileUpdater";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface UpdatePageProps {
-  user: NonNullable<UserProfileData>;
+  user: NonNullable<GetMyProfileData>;
 }
 
-type UserUpdateFormInputs = NonNullable<UserProfileData>;
+type UserUpdateFormInputs = NonNullable<GetMyProfileData>;
 
 export default function UpdatePage({ user }: UpdatePageProps) {
   const [serverError, setServerError] = useState("");
@@ -37,7 +37,7 @@ export default function UpdatePage({ user }: UpdatePageProps) {
       });
 
       if (response.status === 400) {
-        const result: UserProfileUpdateResponse = await response.json();
+        const result: MyProfileUpdaterResponse = await response.json();
         if ("error" in result && result.error) {
           if ("validationErrors" in result && result.validationErrors) {
             for (const validationError of result.validationErrors) {
@@ -144,7 +144,7 @@ export const getServerSideProps = (async (context) => {
     };
   }
 
-  const user = await getUserProfile.byEmail({ email: session.user.email });
+  const user = await getMyProfile.byEmail({ email: session.user.email });
 
   if (!user) {
     return {

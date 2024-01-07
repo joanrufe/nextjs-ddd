@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getUserNotifications } from "@/DDD/";
-import { NotificationsResponse } from "@/shared-backend-frontend/api/GetUserNotifications";
+import { getMyNotifications } from "@/DDD/";
+import { GetMyNotificationsResponse } from "@/shared-backend-frontend/api/Shop/User/GetMyNotifications";
 import { safelyGetServerSession } from "@/utils/auth";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<NotificationsResponse>
+  res: NextApiResponse<GetMyNotificationsResponse>
 ) {
   try {
     const session = await safelyGetServerSession(req);
@@ -19,7 +19,7 @@ export default async function handler(
       return res.status(400).json({ error: "No email provided" });
     }
     const params = { email };
-    const userData = await getUserNotifications.getUserNotifications(params);
+    const userData = await getMyNotifications.byEmail(params);
     if (userData === null) {
       return res.status(404).json({ error: "User not found" });
     }

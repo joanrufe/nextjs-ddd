@@ -1,19 +1,19 @@
-import { GetUserNotifications } from "./GetUserNotifications";
+import { GetMyNotifications } from "./GetMyNotifications";
 import { UserNotificationsService } from "../Services/UserNotificationsService";
 import { createUser } from "../Factories/UserFactory";
 import { createUserNotification } from "../Factories/UserNotificationsFactory";
 import { UserNotification } from "../Entities/UserNotification";
 
-describe("GetUserNotifications", () => {
-  let getUserNotifications: GetUserNotifications;
+describe("GetMyNotifications", () => {
+  let getUserNotifications: GetMyNotifications;
   let userService: UserNotificationsService;
 
   beforeEach(() => {
     userService = new UserNotificationsService();
-    getUserNotifications = new GetUserNotifications(userService);
+    getUserNotifications = new GetMyNotifications(userService);
   });
 
-  describe("getUserWithNotifications", () => {
+  describe("byEmail", () => {
     it("should return the user with notifications for the given id", async () => {
       const userMock = createUser();
       const notificationsMock = Array.from(
@@ -26,7 +26,7 @@ describe("GetUserNotifications", () => {
         .spyOn(userService, "findAll")
         .mockResolvedValueOnce(notificationsMock);
 
-      const notifications = await getUserNotifications.getUserNotifications({
+      const notifications = await getUserNotifications.byEmail({
         email: userMock.email,
       } as { email: string });
 

@@ -1,15 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { userProfilerUpdater, EntityValidationError } from "@/DDD/";
+import { myProfileUpdater, EntityValidationError } from "@/DDD/";
 import {
-  UserProfileUpdateRequestParams,
-  UserProfileUpdateResponse,
-} from "@/shared-backend-frontend/api/UserProfileUpdate";
+  MyProfileUpdaterRequestParams,
+  MyProfileUpdaterResponse,
+} from "@/shared-backend-frontend/api/Shop/User/MyProfileUpdater";
 
 import { safelyGetServerSession } from "@/utils/auth";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<UserProfileUpdateResponse>
+  res: NextApiResponse<MyProfileUpdaterResponse>
 ) {
   const session = await safelyGetServerSession(req);
 
@@ -20,11 +20,11 @@ export default async function handler(
   const { fields } = req.body;
 
   try {
-    const params: UserProfileUpdateRequestParams = {
+    const params: MyProfileUpdaterRequestParams = {
       email: session.user.email,
       fields,
     };
-    const userData = await userProfilerUpdater.updateFields(params);
+    const userData = await myProfileUpdater.updateFields(params);
 
     res.status(200).json(userData);
   } catch (error) {
