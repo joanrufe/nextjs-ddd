@@ -1,18 +1,18 @@
 // use cases
 import { SendWelcomeNotification } from "./Retention/Notifications/UseCases/SendWelcomeNotification";
-import { UserRegister } from "./User/UseCases/UserRegister";
+import { UserRegister } from "./Shop/User/UseCases/UserRegister";
 import { SendWelcomeEmail } from "./Retention/Email/UseCases/SendWelcomeEmail";
 // public interfaces
-import { UserModel } from "./User/interfaces/UserModel";
+import { UserModel } from "./Shop/User/interfaces/UserModel";
 // shared
 import { PrismaService } from "./Shared/PrismaService/PrismaService";
 import { EventBus } from "./Shared/EventBus/EventBus";
-import { GetUserNotifications } from "./User/UseCases/GetUserNotifications";
-import { UserProfilerUpdater } from "./User/UseCases/UserProfilerUpdater";
-import { GetUserProfile } from "./User/UseCases/GetUserProfile";
+import { GetUserNotifications } from "./Shop/User/UseCases/GetUserNotifications";
+import { UserProfilerUpdater } from "./Shop/User/UseCases/UserProfilerUpdater";
+import { GetUserProfile } from "./Shop/User/UseCases/GetUserProfile";
 import { EntityValidationError } from "./Shared/Exceptions/EntityValidationError";
-import { GetUserRole } from "./User/UseCases/GetUserRoles";
-import { Roles } from "./User/Attributes/roles";
+import { GetUserRole } from "./Shop/User/UseCases/GetUserRoles";
+import { Roles } from "./Shop/User/Attributes/roles";
 
 // Shared instances
 const eventBusSingleton = new EventBus();

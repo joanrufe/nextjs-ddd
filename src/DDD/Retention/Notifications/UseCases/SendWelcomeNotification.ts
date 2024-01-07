@@ -1,6 +1,6 @@
 import { NotificationService } from "../Services/NotificationService";
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
-import { UserCreatedEvent } from "@/DDD/User/Events/UserCreatedEvent";
+import { UserCreatedEvent } from "@/DDD/Shop/User/Events/UserCreatedEvent";
 
 export class SendWelcomeNotification {
   constructor(

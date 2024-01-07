@@ -1,7 +1,7 @@
 import { SendWelcomeNotification } from "./SendWelcomeNotification";
 import { NotificationService } from "../Services/NotificationService";
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
-import { createUser } from "@/DDD/User/Factories/UserFactory";
+import { createUser } from "@/DDD/Shop/User/Factories/UserFactory";
 
 describe("SendWelcomeNotification", () => {
   let sendWelcomeNotification: SendWelcomeNotification;

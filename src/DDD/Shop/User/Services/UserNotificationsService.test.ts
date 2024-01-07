@@ -1,5 +1,5 @@
 import { PrismaService } from "@/DDD/Shared/PrismaService/PrismaService";
-import { prismaMock } from "../../__mocks__/jest.setup";
+import { prismaMock } from "../../../__mocks__/jest.setup";
 import { UserNotificationsService } from "./UserNotificationsService";
 import { createUser } from "../Factories/UserFactory";
 import { createUserNotification } from "../Factories/UserNotificationsFactory";

@@ -1,6 +1,6 @@
 import { EmailService } from "../Services/EmailService";
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
-import { UserCreatedEvent } from "@/DDD/User/Events/UserCreatedEvent";
+import { UserCreatedEvent } from "@/DDD/Shop/User/Events/UserCreatedEvent";
 
 export class SendWelcomeEmail {
   constructor(

@@ -1,5 +1,5 @@
 import { UserRegister } from "./UserRegister";
-import { EventBus } from "../../Shared/EventBus/EventBus";
+import { EventBus } from "../../../Shared/EventBus/EventBus";
 import { UserService } from "../Services/UserService";
 import { User } from "../Entities/User";
 import { createUser } from "../Factories/UserFactory";

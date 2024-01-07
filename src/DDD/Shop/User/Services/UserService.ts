@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { UserModel, prismaSingleton } from "../../";
+import { UserModel, prismaSingleton } from "../../..";
 import { User } from "../Entities/User";
 import { NonOptionalNonNull } from "@/utils/types";
 
