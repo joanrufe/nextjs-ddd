@@ -1,14 +1,22 @@
 import { EntityValidationError } from "@/DDD/Shared/Exceptions/EntityValidationError";
 import { $Enums, User as PrismaUser } from "@prisma/client";
-import { IsEmail, IsIn, IsUrl, Length, validate } from "class-validator";
+import {
+  IsEmail,
+  IsIn,
+  IsOptional,
+  IsUrl,
+  Length,
+  validate,
+} from "class-validator";
 
 export class User implements PrismaUser {
   id: string;
   @Length(3, 255, { message: "Name must be at least 3 characters long" })
   name: string | null;
   @IsEmail({}, { message: "Email is not valid" })
-  email: string | null;
+  email: string;
   emailVerified: Date | null;
+  @IsOptional()
   @IsUrl({}, { message: "Image must be a valid URL" })
   image: string | null;
   @IsIn(Object.values($Enums.Role), { message: "Role must be USER or ADMIN" })
@@ -32,6 +40,10 @@ export class User implements PrismaUser {
       image: this.image,
       role: this.role,
     };
+  }
+
+  canBeUpdatedBy(user: User): boolean {
+    return user.role === "ADMIN" || user.id === this.id;
   }
 
   async validate() {

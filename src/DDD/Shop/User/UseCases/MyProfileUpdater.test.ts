@@ -19,13 +19,18 @@ describe("MyProfileUpdater", () => {
   describe("updateFields", () => {
     it("should update the user fields and publish a UserUpdatedEvent", async () => {
       const user = createUser();
+      const email = user.email;
       // Arrange
-      const email = "jane.doe@example.com";
-      const fields: UpdateUserDTO = {
-        name: "Jane Doe",
+      const updateUserDTO: UpdateUserDTO = {
+        email,
+        fields: {
+          name: "Jane Doe",
+          image: "https://example.com/image.png",
+        },
+        updatedByEmail: email,
       };
 
-      const updatedUser = createUser({ ...user, ...fields });
+      const updatedUser = createUser({ ...user, ...updateUserDTO });
       const userUpdatedEvent = new UserUpdatedEvent(user, updatedUser);
 
       jest.spyOn(userService, "findOne").mockResolvedValueOnce(user);
@@ -33,14 +38,14 @@ describe("MyProfileUpdater", () => {
       jest.spyOn(eventBus, "publish");
 
       // Act
-      const result = await userProfilerUpdater.updateFields({
-        email,
-        fields,
-      });
+      const result = await userProfilerUpdater.updateFields(updateUserDTO);
 
       // Assert
       expect(userService.findOne).toHaveBeenCalledWith(email);
-      expect(userService.update).toHaveBeenCalledWith(updatedUser.id, fields);
+      expect(userService.update).toHaveBeenCalledWith(
+        updatedUser.id,
+        updateUserDTO.fields
+      );
       expect(eventBus.publish).toHaveBeenCalledWith(userUpdatedEvent);
       expect(result).toEqual(updatedUser.toPrimitives());
     });
@@ -48,17 +53,43 @@ describe("MyProfileUpdater", () => {
     it("should throw an error if the user is not found", async () => {
       // Arrange
       const email = "jane.doe@example.com";
-      const fields: UpdateUserDTO = {
-        name: "Jane Doe",
-        image: "https://example.com/image.png",
+      const updateUserDTO: UpdateUserDTO = {
+        email,
+        fields: {
+          name: "Jane Doe",
+          image: "https://example.com/image.png",
+        },
+        updatedByEmail: email,
       };
 
       jest.spyOn(userService, "findOne").mockResolvedValueOnce(null);
 
       // Act & Assert
       await expect(
-        userProfilerUpdater.updateFields({ email, fields })
+        userProfilerUpdater.updateFields(updateUserDTO)
       ).rejects.toThrow("User not found");
+    });
+    it("should throw an error if the user is not authorized to update the user", async () => {
+      // Arrange
+      const user = createUser();
+      const anotherUser = createUser();
+      const email = user.email;
+      const updateUserDTO: UpdateUserDTO = {
+        email,
+        fields: {
+          name: "Jane Doe",
+          image: "https://example.com/image.png",
+        },
+        updatedByEmail: anotherUser.email,
+      };
+
+      jest.spyOn(userService, "findOne").mockResolvedValueOnce(user);
+      jest.spyOn(userService, "findOne").mockResolvedValueOnce(anotherUser);
+
+      // Act & Assert
+      await expect(
+        userProfilerUpdater.updateFields(updateUserDTO)
+      ).rejects.toThrow("Unauthorized");
     });
   });
 });

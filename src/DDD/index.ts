@@ -13,6 +13,7 @@ import { GetMyProfile } from "./Shop/User/UseCases/GetMyProfile";
 import { EntityValidationError } from "./Shared/Exceptions/EntityValidationError";
 import { GetUserRole } from "./Shop/User/UseCases/GetUserRoles";
 import { Roles } from "./Shared/User/Attributes/roles";
+import { UnauthorizedError } from "./Shared/Exceptions/UnauthorizedError";
 
 // Shared instances
 const eventBusSingleton = new EventBus();
@@ -33,7 +34,7 @@ const getUserRole = new GetUserRole();
 
 export { Roles };
 export type { UserModel };
-export { EntityValidationError };
+export { EntityValidationError, UnauthorizedError };
 
 // @TODO Things that would need to be fixed/refactored:
 // - Some of the use cases doesn't need to be exported, but they are because

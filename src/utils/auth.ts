@@ -1,5 +1,6 @@
-import { NextApiRequest } from "next";
-import { getServerSession } from "next-auth";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 /**
  * Use this function to get user session from API routes.
@@ -8,10 +9,15 @@ import { getServerSession } from "next-auth";
  * @param req
  * @returns
  */
-export const safelyGetServerSession = async (req: NextApiRequest) => {
+export const safelyGetServerSession = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    const session = await getServerSession(req);
+    const session = await getServerSession(req, res, authOptions);
     return session;
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
   return null;
 };

@@ -1,3 +1,9 @@
 import { UserModel } from "./UserModel";
 
-export type UpdateUserDTO = Partial<Omit<UserModel, "id">>;
+type UpdatedFields = Partial<Omit<UserModel, "id">>;
+
+export interface UpdateUserDTO {
+  email: string;
+  fields: UpdatedFields;
+  updatedByEmail: string;
+}

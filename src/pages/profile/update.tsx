@@ -51,6 +51,8 @@ export default function UpdatePage({ user }: UpdatePageProps) {
         }
       } else if (response.status === 500) {
         setServerError("Failed to update user profile. Please try again.");
+      } else if (response.status === 401) {
+        setServerError("You are not authorized to update this user.");
       } else if (response.status === 200) {
         // TODO: show success message
       }

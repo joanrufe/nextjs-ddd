@@ -8,7 +8,7 @@ export default async function handler(
   res: NextApiResponse<GetMyNotificationsResponse>
 ) {
   try {
-    const session = await safelyGetServerSession(req);
+    const session = await safelyGetServerSession(req, res);
     if (!session?.user?.email) {
       return res.status(401).json({ error: "Unauthorized" });
     }
@@ -20,9 +20,6 @@ export default async function handler(
     }
     const params = { email };
     const userData = await getMyNotifications.byEmail(params);
-    if (userData === null) {
-      return res.status(404).json({ error: "User not found" });
-    }
     res.status(200).json(userData);
   } catch (error) {
     console.error(error);

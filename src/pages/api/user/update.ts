@@ -1,5 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { myProfileUpdater, EntityValidationError } from "@/DDD/";
+import {
+  myProfileUpdater,
+  EntityValidationError,
+  UnauthorizedError,
+} from "@/DDD/";
 import {
   MyProfileUpdaterRequestParams,
   MyProfileUpdaterResponse,
@@ -11,18 +15,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<MyProfileUpdaterResponse>
 ) {
-  const session = await safelyGetServerSession(req);
-
-  if (!session?.user?.email) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  const { fields } = req.body;
-
   try {
+    const session = await safelyGetServerSession(req, res);
+
+    if (!session?.user?.email) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    console.log("session", session);
+    const { fields } = req.body;
     const params: MyProfileUpdaterRequestParams = {
       email: session.user.email,
       fields,
+      updatedByEmail: session.user.email,
     };
     const userData = await myProfileUpdater.updateFields(params);
 
@@ -40,6 +45,9 @@ export default async function handler(
             : "",
         })),
       });
+    }
+    if (error instanceof UnauthorizedError) {
+      return res.status(401).json({ error: "Unauthorized" });
     }
     console.error(error);
     return res.status(500).json({ error: "Something  went wrong" });
