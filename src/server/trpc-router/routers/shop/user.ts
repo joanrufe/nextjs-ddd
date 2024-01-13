@@ -3,7 +3,11 @@ import {
   createTRPCRouter,
   protectedProcedure,
 } from "@/server/trpc-router/trpc";
-import { getMyNotifications, getMyProfile, myProfileUpdater } from "@/DDD";
+import {
+  getMyNotifications,
+  getMyProfile,
+  myProfileUpdater,
+} from "@/server/DDD";
 
 export const UpdateProfileDTO = z.object({
   name: z
