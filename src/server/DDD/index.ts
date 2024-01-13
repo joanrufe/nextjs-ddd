@@ -2,17 +2,16 @@
 import { SendWelcomeNotification } from "./Retention/Notifications/UseCases/SendWelcomeNotification";
 import { UserRegister } from "./Shop/User/UseCases/UserRegister";
 import { SendWelcomeEmail } from "./Retention/Email/UseCases/SendWelcomeEmail";
-// public interfaces
-import { UserModel } from "./Shop/User/interfaces/UserModel";
-// shared
-import { PrismaService } from "./Shared/PrismaService/PrismaService";
-import { EventBus } from "./Shared/EventBus/EventBus";
 import { GetMyNotifications } from "./Shop/User/UseCases/GetMyNotifications";
 import { MyProfileUpdater } from "./Shop/User/UseCases/MyProfileUpdater";
 import { GetMyProfile } from "./Shop/User/UseCases/GetMyProfile";
 import { GetUserRole } from "./Shop/User/UseCases/GetUserRoles";
+
+// shared
 import { Roles } from "./Shared/User/Attributes/roles";
 import { UnauthorizedError } from "./Shared/Exceptions/UnauthorizedError";
+import { PrismaService } from "./Shared/PrismaService/PrismaService";
+import { EventBus } from "./Shared/EventBus/EventBus";
 
 // Shared instances
 const eventBusSingleton = new EventBus();
