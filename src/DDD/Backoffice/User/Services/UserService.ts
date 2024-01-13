@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { prismaSingleton } from "../../..";
 import { User } from "../Entities/User";
-import { OmitMethods } from "@/DDD/Shared/Types/utility-types";
 
 export class UserService {
   constructor(private readonly prisma: PrismaClient = prismaSingleton) {}
@@ -11,20 +10,13 @@ export class UserService {
       where: {
         email,
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        image: true,
-        role: true,
-      },
     });
     if (!user) {
       return null;
     }
     return new User(user);
   }
-  async create(userData: OmitMethods<Omit<User, "id">>): Promise<User> {
+  async create(userData: Prisma.UserCreateArgs["data"]): Promise<User> {
     const createdUser = await this.prisma.user.create({
       data: {
         ...userData,
@@ -36,7 +28,7 @@ export class UserService {
 
   async update(
     id: string,
-    user: Partial<OmitMethods<Omit<User, "id">>>
+    user: Omit<Prisma.UserUpdateArgs["data"], "id">
   ): Promise<User> {
     const currentUser = await this.prisma.user.findUnique({
       where: {
@@ -46,6 +38,8 @@ export class UserService {
     if (!currentUser) {
       throw new Error("User not found");
     }
+
+    // console.log("userData", user);
     const updatedUser = await this.prisma.user.update({
       where: {
         id,
@@ -55,5 +49,9 @@ export class UserService {
       },
     });
     return new User(updatedUser);
+  }
+  async findMany(): Promise<User[]> {
+    const users = this.prisma.user.findMany();
+    return users.then((users) => users.map((user) => new User(user)));
   }
 }

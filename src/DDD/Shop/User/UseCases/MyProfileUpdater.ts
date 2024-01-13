@@ -1,8 +1,8 @@
 import { EventBus } from "@/DDD/Shared/EventBus/EventBus";
 import { UserUpdatedEvent } from "../Events/UserUpdatedEvent";
 import { UserService } from "../Services/UserService";
-import { UpdateUserDTO } from "../interfaces/UpdateUserDTO";
-import { UnauthorizedError } from "@/DDD/Shared/Exceptions/UnauthorizedError";
+import { OmitMethods } from "@/DDD/Shared/Types/utility-types";
+import { User } from "../Entities/User";
 
 export class MyProfileUpdater {
   constructor(
@@ -10,12 +10,15 @@ export class MyProfileUpdater {
     private readonly userService: UserService = new UserService()
   ) {}
 
-  async updateFields({ email, fields, updatedByEmail }: UpdateUserDTO) {
+  async updateFields({
+    email,
+    fields,
+  }: {
+    email: string;
+    fields: Partial<OmitMethods<Omit<User, "id">>>;
+  }) {
     const user = await this.userService.findOne(email);
-    const updatedByUser = await this.userService.findOne(updatedByEmail);
-    if (updatedByUser && !user?.canBeUpdatedBy(updatedByUser)) {
-      throw new UnauthorizedError();
-    }
+
     if (!user) {
       throw new Error("User not found");
     }

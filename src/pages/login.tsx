@@ -1,10 +1,10 @@
+import { getServerAuthSession } from "@/server/auth";
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
 import { getServerSession } from "next-auth";
 import { getCsrfToken } from "next-auth/react";
-import { authOptions } from "./api/auth/[...nextauth]";
 
 export default function SignIn({
   csrfToken,
@@ -37,7 +37,7 @@ export default function SignIn({
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const csrfToken = await getCsrfToken(context);
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerAuthSession(context);
 
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page

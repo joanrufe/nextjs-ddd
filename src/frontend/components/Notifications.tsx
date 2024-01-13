@@ -1,10 +1,15 @@
 import { useState } from "react";
 
 import { BellIcon } from "@heroicons/react/24/outline";
-import { GetMyNotificationsData } from "@/shared-backend-frontend/api/Shop/User/GetMyNotifications";
+import { inferProcedureInput, inferProcedureOutput } from "@trpc/server";
+import { AppRouter } from "@/server/trpc-router/root";
+
+type GetNotificationsOutput = inferProcedureOutput<
+  AppRouter["shop"]["user"]["getNotifications"]
+>["notifications"];
 
 interface NotificationBellProps {
-  notifications?: GetMyNotificationsData;
+  notifications?: GetNotificationsOutput;
 }
 
 const NotificationBell = ({ notifications }: NotificationBellProps) => {

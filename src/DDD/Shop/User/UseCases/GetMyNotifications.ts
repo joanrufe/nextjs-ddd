@@ -1,5 +1,4 @@
 import { UserNotificationsService } from "../Services/UserNotificationsService";
-import { GetUserNotificationsDTO } from "../interfaces/GetUserNotificationsDTO";
 
 export class GetMyNotifications {
   constructor(
@@ -8,7 +7,7 @@ export class GetMyNotifications {
     this.userNotificationService = userNotificationService;
   }
 
-  async byEmail({ email }: GetUserNotificationsDTO) {
+  async byEmail({ email }: { email: string }) {
     const notifications = await this.userNotificationService.findAll(email);
     return notifications.map((n) => n.toPrimitives());
   }

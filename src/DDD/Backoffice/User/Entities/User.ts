@@ -1,28 +1,34 @@
-import { OmitMethods } from "@/DDD/Shared/Types/utility-types";
 import { $Enums, User as PrismaUser } from "@prisma/client";
 
-export class User implements Partial<PrismaUser> {
+export class User implements PrismaUser {
   id: string;
   name: string | null;
   email: string;
+  emailVerified: Date | null;
   image: string | null;
-  role?: $Enums.Role | undefined;
+  role: $Enums.Role;
 
-  constructor(user: Pick<PrismaUser, keyof OmitMethods<User>>) {
+  constructor(user: PrismaUser) {
     this.id = user.id;
     this.name = user.name;
     this.email = user.email;
+    this.emailVerified = user.emailVerified;
     this.image = user.image;
     this.role = user.role;
   }
 
-  toPrimitives() {
+  toPrimitives(): PrismaUser {
     return {
       id: this.id,
       name: this.name,
       email: this.email,
+      emailVerified: this.emailVerified,
       image: this.image,
       role: this.role,
     };
+  }
+
+  canBeUpdatedBy(user: User): boolean {
+    return user.role === "ADMIN" || user.id === this.id;
   }
 }

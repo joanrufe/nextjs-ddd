@@ -21,8 +21,8 @@ describe("GetMyProfile", () => {
       const result = await getUserProfile.byEmail({ email });
 
       expect(userService.findOne).toHaveBeenCalledWith(email);
-      const { emailVerified: _, role: _r, ...userData } = user.toPrimitives();
-      expect(result).toEqual(userData);
+
+      expect(result).toEqual(user.toPrimitives());
     });
 
     it("should return null if user is not found", async () => {

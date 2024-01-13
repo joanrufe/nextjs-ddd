@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Session } from "next-auth";
-import { useUserNotifications } from "@/frontend/hooks/useUserNotifications";
 import NotificationBell from "./Notifications";
+import { api } from "@/api-utils/client";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -29,12 +29,16 @@ export default function Header() {
 }
 
 function UserProfileHeader(session: { user: Session["user"] }) {
-  const { notifications } = useUserNotifications(
-    session.user?.email || undefined
+  const { data, error } = api.shop.user.getNotifications.useQuery(
+    session.user.email
   );
+
+  if (error) {
+    return <div>Error loading notifications</div>;
+  }
   return (
     <div className="flex items-center">
-      <NotificationBell notifications={notifications} />
+      <NotificationBell notifications={data?.notifications} />
       <div className="ml-4">
         <Link
           className="underline text-blue-300 text-sm font-medium"

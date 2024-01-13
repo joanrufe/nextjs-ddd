@@ -1,66 +1,70 @@
-import { getMyProfile } from "@/DDD";
-import { GetMyProfileData } from "@/shared-backend-frontend/api/Shop/User/GetMyProfile";
-import { MyProfileUpdaterResponse } from "@/shared-backend-frontend/api/Shop/User/MyProfileUpdater";
-import { GetServerSideProps } from "next";
+import { AppRouter } from "@/server/trpc-router/root";
+import { TRPCError, inferProcedureInput } from "@trpc/server";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { api, isTRPCClientError } from "@/api-utils/client";
+import { getServerSideAPI } from "@/api-utils/server";
 
-interface UpdatePageProps {
-  user: NonNullable<GetMyProfileData>;
-}
+type UpdatePageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-type UserUpdateFormInputs = NonNullable<GetMyProfileData>;
+type UpdateProfileInput = inferProcedureInput<
+  AppRouter["shop"]["user"]["updateProfile"]
+>;
 
-export default function UpdatePage({ user }: UpdatePageProps) {
+export default function UpdatePage(props: UpdatePageProps) {
+  const {
+    data: { user },
+  } = api.shop.user.getProfile.useQuery(props.user.email, {
+    initialData: {
+      user: props.user,
+    },
+  });
+  const { mutateAsync } = api.shop.user.updateProfile.useMutation();
+
   const [serverError, setServerError] = useState("");
+  const [success, setSuccess] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<UserUpdateFormInputs>({
+  } = useForm<UpdateProfileInput>({
     defaultValues: {
-      name: user.name ?? "",
-      email: user.email ?? "",
+      name: user?.name ?? "",
+      email: user?.email ?? "",
     },
   });
-  const onSubmit: SubmitHandler<UserUpdateFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<UpdateProfileInput> = async (data) => {
     setServerError("");
     try {
-      const response = await fetch("/api/user/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fields: data }),
-      });
-
-      if (response.status === 400) {
-        const result: MyProfileUpdaterResponse = await response.json();
-        if ("error" in result && result.error) {
-          if ("validationErrors" in result && result.validationErrors) {
-            for (const validationError of result.validationErrors) {
-              setError(validationError.field as keyof UserUpdateFormInputs, {
-                message: validationError.message,
-              });
-            }
-          } else {
-            setServerError(result.error);
+      const res = await mutateAsync(data);
+      if (res?.success) {
+        setSuccess(true);
+      }
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        if (error.code === "UNAUTHORIZED") {
+          setServerError("You are not authorized to perform this action.");
+        }
+      }
+      if (isTRPCClientError<UpdateProfileInput>(error)) {
+        const fieldErrors = error.data?.zodError?.fieldErrors;
+        if (!fieldErrors) {
+          setServerError("Failed to update user profile. Please try again.");
+        }
+        for (const fieldName in fieldErrors) {
+          const messages = fieldErrors[fieldName];
+          if (messages) {
+            setError(fieldName as keyof UpdateProfileInput, {
+              message: messages.join(", "),
+            });
           }
         }
-      } else if (response.status === 500) {
+      } else {
         setServerError("Failed to update user profile. Please try again.");
-      } else if (response.status === 401) {
-        setServerError("You are not authorized to update this user.");
-      } else if (response.status === 200) {
-        // TODO: show success message
       }
-
-      // Handle successful update (e.g., show a success message or redirect)
-    } catch (error) {
-      console.error("Error:", error);
-      setServerError("Failed to update user profile. Please try again.");
     }
   };
 
@@ -70,6 +74,13 @@ export default function UpdatePage({ user }: UpdatePageProps) {
 
       <form className="w-full max-w-lg" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full px-3">
+            {success && (
+              <p className="text-green-500 text-xs italic">
+                Profile updated successfully.
+              </p>
+            )}
+          </div>
           <div className="w-full px-3">
             {serverError && (
               <p className="text-red-500 text-xs italic">{serverError}</p>
@@ -134,30 +145,44 @@ export default function UpdatePage({ user }: UpdatePageProps) {
     </div>
   );
 }
-export const getServerSideProps = (async (context) => {
-  const session = await getSession(context);
 
-  if (!session?.user?.email) {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  try {
+    const session = await getSession(context);
+
+    if (!session?.user?.email) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
+    const serverSideAPI = getServerSideAPI(session);
+    const data = await serverSideAPI.shop.user.getProfile.fetch(
+      session.user.email
+    );
+
+    if (!data?.user) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+    return {
+      props: { user: data.user },
+    };
+  } catch (e) {
+    console.error(e);
     return {
       redirect: {
-        destination: "/login",
+        destination: "/500",
         permanent: false,
       },
     };
   }
-
-  const user = await getMyProfile.byEmail({ email: session.user.email });
-
-  if (!user) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { user },
-  };
-}) satisfies GetServerSideProps<UpdatePageProps>;
+};
