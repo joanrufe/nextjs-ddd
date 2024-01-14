@@ -9,7 +9,7 @@ import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
-import { type AppRouter } from "@/server/trpc-router/root";
+import { type AppRouter } from "@/server/DDD/app.router";
 
 export const isTRPCClientError = <T extends Record<string, any>>(
   error: unknown

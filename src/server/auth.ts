@@ -2,8 +2,9 @@ import { NextAuthOptions, getServerSession } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import Email from "next-auth/providers/email";
-import { getUserRole, prismaSingleton } from "@/server/DDD";
-import { userRegister } from "@/server/DDD";
+import { prismaSingleton } from "./DDD/";
+import { getUserRole } from "./DDD/";
+import { userRegister } from "./DDD/";
 import { GetServerSidePropsContext } from "next";
 
 export const authOptions: NextAuthOptions = {

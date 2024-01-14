@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { prismaSingleton } from "../../..";
+import { prismaSingleton } from "@/server/DDD/";
 import { User } from "../Entities/User";
 import { OmitMethods } from "@/server/DDD/Shared/Types/utility-types";
 

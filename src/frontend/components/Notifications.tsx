@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { BellIcon } from "@heroicons/react/24/outline";
 import { inferProcedureInput, inferProcedureOutput } from "@trpc/server";
-import { AppRouter } from "@/server/trpc-router/root";
+import { AppRouter } from "@/server/DDD/app.router";
 
 type GetNotificationsOutput = inferProcedureOutput<
   AppRouter["shop"]["user"]["getNotifications"]

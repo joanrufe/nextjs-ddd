@@ -1,13 +1,10 @@
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  protectedProcedure,
-} from "@/server/trpc-router/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/DDD/trpc";
 import {
   getMyNotifications,
   getMyProfile,
   myProfileUpdater,
-} from "@/server/DDD";
+} from "./user.module";
 
 export const UpdateProfileDTO = z.object({
   name: z

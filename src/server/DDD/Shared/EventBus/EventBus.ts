@@ -79,3 +79,5 @@ export class EventBus {
     console.log(this.handlers);
   }
 }
+
+export const eventBusSingleton = new EventBus();

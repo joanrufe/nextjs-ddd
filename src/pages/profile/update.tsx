@@ -1,4 +1,4 @@
-import { AppRouter } from "@/server/trpc-router/root";
+import { AppRouter } from "@/server/DDD/app.router";
 import { TRPCError, inferProcedureInput } from "@trpc/server";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getSession } from "next-auth/react";

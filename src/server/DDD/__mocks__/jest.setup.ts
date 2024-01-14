@@ -1,11 +1,10 @@
 import { mockDeep, mockReset, DeepMockProxy } from "jest-mock-extended";
-
-import { prismaSingleton } from "@/server/DDD";
-import { PrismaService } from "@/server/DDD/Shared/PrismaService/PrismaService";
+import { prismaSingleton } from "@/server/DDD/";
+import { PrismaClient } from "@prisma/client";
 
 jest.mock("@/server/DDD", () => ({
   __esModule: true,
-  prismaSingleton: mockDeep<PrismaService>(),
+  prismaSingleton: mockDeep<PrismaClient>(),
 }));
 
 beforeEach(() => {
@@ -13,7 +12,7 @@ beforeEach(() => {
 });
 
 export const prismaMock =
-  prismaSingleton as unknown as DeepMockProxy<PrismaService>;
+  prismaSingleton as unknown as DeepMockProxy<PrismaClient>;
 
 // mock process.env.DEBUG_EVENTS to false
 

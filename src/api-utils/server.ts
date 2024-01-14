@@ -1,4 +1,4 @@
-import { appRouter } from "@/server/trpc-router/root";
+import { appRouter } from "@/server/DDD/app.router";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { Session } from "next-auth";
 import superjson from "superjson";

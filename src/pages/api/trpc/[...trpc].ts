@@ -1,7 +1,7 @@
 import { createNextApiHandler } from "@trpc/server/adapters/next";
 
-import { appRouter } from "@/server/trpc-router/root";
-import { createTRPCContext } from "@/server/trpc-router/trpc";
+import { appRouter } from "@/server/DDD/app.router";
+import { createTRPCContext } from "@/server/DDD/trpc";
 
 // export API handler
 export default createNextApiHandler({

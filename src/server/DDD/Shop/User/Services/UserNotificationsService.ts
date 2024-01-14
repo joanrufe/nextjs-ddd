@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { prismaSingleton } from "../../..";
+import { prismaSingleton } from "@/server/DDD/";
 import { UserNotification } from "../Entities/UserNotification";
 
 export class UserNotificationsService {
