@@ -5,7 +5,13 @@
     "import/no-internal-modules": [
       "error",
       {
-        "forbid": ["@/DDD/**/*", "**/DDD/**/*"]
+        "forbid": [
+          "@/server/*",
+          "@/server/**/*",
+          "**/.*/server/**/*",
+          "../../.*/server/**/*",
+          "../../../.*/server/**/*"
+        ]
       }
     ]
   }

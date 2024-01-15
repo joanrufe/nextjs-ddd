@@ -1,9 +1,8 @@
-import { getServerAuthSession } from "@/server/auth";
+import { getServerAuthSession } from "@/server";
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
-import { getServerSession } from "next-auth";
 import { getCsrfToken } from "next-auth/react";
 
 export default function SignIn({

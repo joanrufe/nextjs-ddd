@@ -1,11 +1,11 @@
-import { AppRouter } from "@/server/DDD/app.router";
 import { TRPCError, inferProcedureInput } from "@trpc/server";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { api, isTRPCClientError } from "@/api-utils/client";
-import { getServerSideAPI } from "@/api-utils/server";
+import { api, isTRPCClientError } from "@/api-client/browser";
+import { getServerSideAPI } from "@/api-client/server";
+import type { AppRouter } from "@/server";
 
 type UpdatePageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 

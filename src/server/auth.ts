@@ -2,10 +2,14 @@ import { NextAuthOptions, getServerSession } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import Email from "next-auth/providers/email";
-import { prismaSingleton } from "./DDD/";
-import { getUserRole } from "./DDD/";
-import { userRegister } from "./DDD/";
+import { container } from "./modules";
 import { GetServerSidePropsContext } from "next";
+import { getServerSideAPI } from "@/api-client/server";
+import { PrismaService } from "./modules/Shared/shared.module";
+import { UserRegister } from "./modules/Shop/shop.module";
+
+const prismaSingleton = container.resolve(PrismaService);
+const userRegister = container.resolve(UserRegister);
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -35,10 +39,14 @@ export const authOptions: NextAuthOptions = {
     },
   },
   callbacks: {
-    session: async ({ session, user }) => {
-      const role = await getUserRole.byEmail({ email: user.email });
-      if (session.user && role) {
-        session.user.role = role;
+    session: async ({ session }) => {
+      // const role = await getUserRole.byEmail({ email: user.email });
+      const serverSideAPI = getServerSideAPI(session);
+      const data = await serverSideAPI.shop.user.getUserRole.fetch(
+        session.user.email
+      );
+      if (session.user && data.role) {
+        session.user.role = data.role;
       }
       return session;
     },

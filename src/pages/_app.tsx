@@ -2,7 +2,8 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Layout from "@/frontend/components/Layout";
 import "@/styles/globals.css";
-import { api } from "@/api-utils/client";
+import "reflect-metadata";
+import { api } from "@/api-client/browser";
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (

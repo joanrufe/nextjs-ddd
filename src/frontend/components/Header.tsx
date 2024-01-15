@@ -2,7 +2,7 @@ import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Session } from "next-auth";
 import NotificationBell from "./Notifications";
-import { api } from "@/api-utils/client";
+import { api } from "@/api-client/browser";
 
 export default function Header() {
   const { data: session } = useSession();
