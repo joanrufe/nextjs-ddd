@@ -3,7 +3,6 @@ import { GetUserRole } from "./GetUserRoles";
 import { UserService } from "../Services/UserService";
 import { createUser } from "../Factories/UserFactory";
 import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
-import { TestBed } from "@automock/jest";
 
 describe("GetUserRoles", () => {
   let getUserRoles: GetUserRole;
