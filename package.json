@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "dotenv -e .local.env -- prisma generate || true",
+    "prebuild": "prisma generate || true",
     "build": "next build",
     "start": "next start",
     "db:generate": "prisma generate",
