@@ -1,6 +1,7 @@
 {
   "name": "next-auth-domain-events",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",

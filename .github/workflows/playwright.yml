@@ -19,6 +19,8 @@ jobs:
         run: docker-compose up -d
       - name: Install dependencies
         run: npm ci
+      - name: Copy test .env file
+        run: cp .env.test .env
       - name: Seed database
         run: npm run db:seed
       - name: Install Playwright Browsers
