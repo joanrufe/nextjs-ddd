@@ -12,6 +12,7 @@
     "playwright": "playwright test",
     "playwright:debug": "playwright test --debug",
     "playwright:report": "playwright show-report",
+    "postinstall": "dotenv -e .local.env -- prisma generate || true",
     "lint": "next lint",
     "test": "jest",
     "test:dev": "start-server-and-test dev http://127.0.0.1:3000 playwright",
