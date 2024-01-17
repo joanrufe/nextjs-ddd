@@ -12,6 +12,7 @@ generator erd {
     provider = "prisma-erd-generator"
     output   = "../docs/DB_schema.svg"
     theme    = "forest"
+    disabled = env("DISABLE_ERD_GENERATION")
 }
 
 model Account {

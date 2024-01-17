@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "prisma generate || true",
+    "prebuild": "DISABLE_ERD_GENERATION=true && prisma generate || true",
     "build": "next build",
     "start": "next start",
     "db:generate": "prisma generate",
