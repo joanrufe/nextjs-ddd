@@ -14,6 +14,6 @@ test("specific element is present", async ({ page }) => {
 
   // Replace 'ElementSelector' with the actual selector of an element you expect to find
   await expect(
-    page.locator('a[href="https://github.com/joanrufe/nextjs-ddd"]')
+    page.locator('a[href="https://github.com/joanrufe/nextjs-ddda"]')
   ).toBeVisible();
 });
