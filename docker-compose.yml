@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  nextjs:
+    container_name: nextjs
+    # build: .
+    ports: 
+      - "3500:3000"
+    build:
+      context: .
+      dockerfile: Dockerfile
+  postgres:
+    image: postgres
+    ports: # map default postgres port to 5454
+      - "5454:5432"
+    environment:
+      POSTGRES_DB: uppereat
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
