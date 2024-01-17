@@ -16,6 +16,7 @@
     "lint": "next lint",
     "test": "jest",
     "test:dev": "start-server-and-test dev http://127.0.0.1:3000 playwright",
+    "db:seed": "prisma db seed",
     "test:playwright:ci": "NEXTAUTH_SECRET=tests start-server-and-test start http://127.0.0.1:3000 playwright"
   },
   "dependencies": {
@@ -64,5 +65,8 @@
     "tailwindcss": "^3",
     "ts-jest": "^29.1.1",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts --path ./tsconfig.json"
   }
 }
