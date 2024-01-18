@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres
     ports: # map default postgres port to 5454
-      - "5454:5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: dddnext
       POSTGRES_USER: admin
