@@ -9,10 +9,6 @@ describe("GetUserRoles", () => {
   let userService: UserService;
   // let PrismaService: jest.MockedClass<PrismaClient>;
 
-  beforeAll(() => {
-    const { unit, unitRef } = TestBed.create(UserService).compile();
-    userService = unit;
-  });
   beforeEach(() => {
     userService = new UserService(prismaMock);
     getUserRoles = new GetUserRole(userService);

@@ -12,7 +12,7 @@ generator erd {
     provider = "prisma-erd-generator"
     output   = "../docs/DB_schema.svg"
     theme    = "forest"
-    disabled = env("DISABLE_ERD_GENERATION")
+    disabled = env("ENABLE_ERD_GENERATION")
 }
 
 model Account {
@@ -48,6 +48,7 @@ model User {
     email         String         @unique
     emailVerified DateTime?
     image         String?
+    password      String?
     role          Role           @default(USER)
     accounts      Account[]
     sessions      Session[]

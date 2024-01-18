@@ -1,7 +1,8 @@
 import { NextAuthOptions, getServerSession } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
-import Email from "next-auth/providers/email";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { compare } from "bcryptjs";
 import { container } from "./modules";
 import { GetServerSidePropsContext } from "next";
 import { getServerSideAPI } from "@/api-client/server";
@@ -14,17 +15,43 @@ const userRegister = container.resolve(UserRegister);
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prismaSingleton) as Adapter,
+  session: {
+    strategy: "jwt",
+  },
   providers: [
-    Email({
-      server: {
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT),
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASSWORD,
+    CredentialsProvider({
+      name: "Sign in",
+      id: "credentials",
+      type: "credentials",
+      credentials: {
+        email: {
+          label: "Email",
+          type: "text",
         },
+        password: { label: "Password", type: "password" },
       },
-      from: process.env.EMAIL_FROM,
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials.password) {
+          return null;
+        }
+
+        const user = await prismaSingleton.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        });
+
+        if (!user || !(await compare(credentials.password, user.password!))) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          randomKey: "Hey cool",
+        };
+      },
     }),
     // ...add more providers here
     // Eg: CredentialsProvider can be used with legacy APIs with a username/password
@@ -50,10 +77,28 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    signIn: async ({ user }) => {
+      // Here should publish domain event
+      debugger;
+      return true;
+    },
+    jwt: ({ token, user }) => {
+      debugger;
+      if (user) {
+        const u = user as unknown as any;
+        return {
+          ...token,
+          id: u.id,
+          randomKey: u.randomKey,
+        };
+      }
+      return token;
+    },
   },
   pages: {
     signIn: "/login",
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 /**

@@ -1,6 +1,6 @@
 import { $Enums, User as PrismaUser } from "@prisma/client";
 
-export class User implements PrismaUser {
+export class User implements Omit<PrismaUser, "password"> {
   id: string;
   name: string | null;
   email: string;
@@ -8,7 +8,7 @@ export class User implements PrismaUser {
   image: string | null;
   role: $Enums.Role;
 
-  constructor(user: PrismaUser) {
+  constructor(user: Omit<PrismaUser, "password">) {
     this.id = user.id;
     this.name = user.name;
     this.email = user.email;
@@ -17,7 +17,7 @@ export class User implements PrismaUser {
     this.role = user.role;
   }
 
-  toPrimitives(): PrismaUser {
+  toPrimitives(): Omit<PrismaUser, "password"> {
     return {
       id: this.id,
       name: this.name,

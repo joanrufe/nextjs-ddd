@@ -19,7 +19,7 @@ describe("UserService", () => {
         email,
       });
 
-      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
+      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user as any);
 
       const result = await userService.findOne(email);
 
@@ -39,7 +39,7 @@ describe("UserService", () => {
 
       const { id, ...userWithoutId } = user;
 
-      jest.spyOn(prisma.user, "create").mockResolvedValueOnce(user);
+      jest.spyOn(prisma.user, "create").mockResolvedValueOnce(user as any);
 
       const result = await userService.create(userWithoutId);
 
@@ -59,8 +59,10 @@ describe("UserService", () => {
         name: "Jane Doe",
       };
 
-      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
-      jest.spyOn(prisma.user, "update").mockResolvedValueOnce(updatedUser);
+      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user as any);
+      jest
+        .spyOn(prisma.user, "update")
+        .mockResolvedValueOnce(updatedUser as any);
 
       const result = await userService.update(user.id, { name: "Jane Doe" });
 
@@ -85,8 +87,10 @@ describe("UserService", () => {
         ...user,
         ...fieldsToUpdate,
       };
-      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user);
-      jest.spyOn(prisma.user, "update").mockResolvedValueOnce(updatedUser);
+      jest.spyOn(prisma.user, "findUnique").mockResolvedValueOnce(user as any);
+      jest
+        .spyOn(prisma.user, "update")
+        .mockResolvedValueOnce(updatedUser as any);
       const result = await userService.update(user.id, {
         ...fieldsToUpdate,
       });

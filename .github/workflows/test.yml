@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Tests
 on:
   push:
     branches: [main]
@@ -21,16 +21,18 @@ jobs:
         run: npm ci
       - name: Copy test .env file
         run: cp .env.test .env
-      - name: Run migrations
+      - name: Run Unit tests
+        run: npm run test:unit
+      - name: Run Database migrations
         run: npm run test:db:migrate
       - name: Seed database
         run: npm run test:db:seed
-      - name: Install Playwright Browsers
+      - name: Install Playwright dependencies
         run: npx playwright install --with-deps
       - name: run build
         run: npm run build
-      - name: Run Playwright tests
-        run: npm run test:playwright:ci
+      - name: Run E2E tests
+        run: npm run test:e2e:ci
       - uses: actions/upload-artifact@v3
         if: always()
         with:

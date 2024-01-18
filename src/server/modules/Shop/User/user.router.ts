@@ -60,7 +60,6 @@ export const userRouter = createTRPCRouter({
     .input(GetProfileDTO)
     .query(async ({ input }) => {
       const notifications = await getMyNotifications.byEmail({ email: input });
-      console.log("notifications", notifications);
       return {
         notifications,
       };

@@ -1,10 +1,8 @@
 import { DomainEvent, EventBus } from "./EventBus";
 
-class MyUserCreatedEvent extends DomainEvent {
+class MyUserCreatedEvent implements DomainEvent {
   // public eventType = "MyUserCreatedEvent";
-  constructor(public readonly user: { id: number; name: string }) {
-    super();
-  }
+  constructor(public readonly user: { id: number; name: string }) {}
 }
 
 describe("EventBus", () => {
