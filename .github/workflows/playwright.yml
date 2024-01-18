@@ -21,6 +21,8 @@ jobs:
         run: npm ci
       - name: Copy test .env file
         run: cp .env.test .env
+      - name: Run migrations
+        run: npm run test:db:migrate
       - name: Seed database
         run: npm run test:db:seed
       - name: Install Playwright Browsers

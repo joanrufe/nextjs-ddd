@@ -1,7 +1,6 @@
 {
   "name": "next-auth-domain-events",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -18,6 +17,7 @@
     "test": "jest",
     "test:dev": "start-server-and-test dev http://127.0.0.1:3000 playwright",
     "test:db:seed": "dotenv -e .env.test -- prisma db seed",
+    "test:db:migrate": "dotenv -e .env.test -- prisma migrate dev",
     "test:playwright:ci": "NEXTAUTH_SECRET=tests start-server-and-test start http://127.0.0.1:3000 playwright"
   },
   "dependencies": {
