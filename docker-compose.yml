@@ -5,9 +5,9 @@ services:
     ports: # map default postgres port to 5454
       - "5454:5432"
     environment:
-      POSTGRES_DB: uppereat
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: dddnext
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
   # nextjs:
   #   container_name: nextjs
   #   depends_on:

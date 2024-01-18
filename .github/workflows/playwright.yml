@@ -22,7 +22,7 @@ jobs:
       - name: Copy test .env file
         run: cp .env.test .env
       - name: Seed database
-        run: npm run db:seed
+        run: npm run test:db:seed
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: run build
