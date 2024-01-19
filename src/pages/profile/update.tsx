@@ -44,15 +44,14 @@ export default function UpdatePage(props: UpdatePageProps) {
         setSuccess(true);
       }
     } catch (error) {
-      if (error instanceof TRPCError) {
-        if (error.code === "UNAUTHORIZED") {
-          setServerError("You are not authorized to perform this action.");
-        }
-      }
       if (isTRPCClientError<UpdateProfileInput>(error)) {
         const fieldErrors = error.data?.zodError?.fieldErrors;
         if (!fieldErrors) {
-          setServerError("Failed to update user profile. Please try again.");
+          if (error.message) {
+            setServerError(error.message);
+          } else {
+            setServerError("Failed to update user profile. Please try again.");
+          }
         }
         for (const fieldName in fieldErrors) {
           const messages = fieldErrors[fieldName];
@@ -114,10 +113,11 @@ export default function UpdatePage(props: UpdatePageProps) {
               Email
             </label>
             <input
-              className="appearance-none block w-full bg-gray-800 text-white border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-gray-600"
+              className="appearance-none block w-full bg-gray-800 text-white border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-gray-600 disabled:opacity-70 cursor-not-allowed"
               placeholder="email@example.com"
               {...register("email", {
                 required: "Email is required",
+                disabled: true,
                 pattern: {
                   value: /\S+@\S+\.\S+/,
                   message: "Entered value does not match email format",
@@ -125,6 +125,7 @@ export default function UpdatePage(props: UpdatePageProps) {
               })}
             />
           </div>
+
           {errors.email && (
             <p className="text-red-500 text-xs italic">
               {errors.email.message}

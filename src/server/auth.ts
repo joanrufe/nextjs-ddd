@@ -77,17 +77,6 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-
-    jwt: ({ token, user }) => {
-      if (user) {
-        const u = user as unknown as any;
-        return {
-          ...token,
-          id: u.id,
-        };
-      }
-      return token;
-    },
   },
   pages: {
     signIn: "/login",

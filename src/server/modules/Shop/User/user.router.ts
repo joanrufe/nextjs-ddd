@@ -7,6 +7,7 @@ import {
   MyProfileUpdater,
 } from "./user.module";
 import { container } from "../..";
+import { TRPCError } from "@trpc/server";
 
 const getMyNotifications = container.get(GetMyNotifications);
 const getMyProfile = container.get(GetMyProfile);
@@ -33,7 +34,10 @@ export const userRouter = createTRPCRouter({
     .input(UpdateProfileDTO)
     .mutation(async ({ input, ctx }) => {
       if (input.email !== ctx.session.user.email) {
-        throw new Error("You cannot change other users' emails");
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You can only update your own profile",
+        });
       }
       await myProfileUpdater.updateFields({
         email: input.email,
