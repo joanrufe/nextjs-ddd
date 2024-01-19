@@ -22,11 +22,11 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Sign in",
       id: "credentials",
-      type: "credentials",
+      // type: "credentials",
       credentials: {
         email: {
           label: "Email",
-          type: "text",
+          type: "email",
         },
         password: { label: "Password", type: "password" },
       },
