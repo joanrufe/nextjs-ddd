@@ -2,7 +2,7 @@
 
 This is an example of how to approach a server-like architecture in a NextJS project
 
-In Domain-Driven Design, these domains represent different areas of the software's business logic. Each domain is isolated and can be developed independently, which helps in managing complexity and improving maintainability.
+In Domain-Driven Design, the code is splitted by the different areas of business instead of by the type of code (controllers, services, etc). This is called Bounded Contexts and it's a way to organize the code in a way that it's easier to understand, maintain and scale.
 
 Key features:
 

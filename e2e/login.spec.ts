@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { testUser } from "../testData";
 
 test("login page is accessible", async ({ page }) => {
   const res = await page.goto("http://localhost:3000/login");
@@ -19,11 +20,11 @@ test("login form makes successful login and redirects to /profile/update", async
   await expect(passwordField).toBeVisible();
   await expect(submitButton).toBeVisible();
 
-  await emailField.fill("user@example.com");
-  await passwordField.fill("user12345");
+  await emailField.fill(testUser.email);
+  await passwordField.fill(testUser.password);
 
-  expect(await emailField.inputValue()).toBe("user@example.com");
-  expect(await passwordField.inputValue()).toBe("user12345");
+  expect(await emailField.inputValue()).toBe(testUser.email);
+  expect(await passwordField.inputValue()).toBe(testUser.password);
 
   await submitButton.click();
 
