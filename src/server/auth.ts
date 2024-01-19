@@ -9,8 +9,8 @@ import { getServerSideAPI } from "@/api-client/server";
 import { PrismaService } from "./modules/Shared/shared.module";
 import { UserRegister } from "./modules/Shop/shop.module";
 
-const prismaSingleton = container.resolve(PrismaService);
-const userRegister = container.resolve(UserRegister);
+const prismaSingleton = container.get(PrismaService);
+const userRegister = container.get(UserRegister);
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -99,6 +99,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.DEBUG_ENABLED === "true",
 };
 
 /**
