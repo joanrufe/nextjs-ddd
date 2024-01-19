@@ -77,19 +77,13 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    signIn: async ({ user }) => {
-      // Here should publish domain event
-      debugger;
-      return true;
-    },
+
     jwt: ({ token, user }) => {
-      debugger;
       if (user) {
         const u = user as unknown as any;
         return {
           ...token,
           id: u.id,
-          randomKey: u.randomKey,
         };
       }
       return token;
@@ -99,7 +93,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.DEBUG_ENABLED === "true",
+  debug: true,
 };
 
 /**
