@@ -1,16 +1,9 @@
-import { getServerAuthSession } from "@/server";
-import type {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from "next";
-import { getCsrfToken, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-export default function SignIn({
-  csrfToken,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function SignIn({}) {
   const { register, handleSubmit, formState, setError } = useForm<{
     email: string;
     password: string;
@@ -38,9 +31,7 @@ export default function SignIn({
         redirect: false,
         email: data.email,
         password: data.password,
-        csrfToken,
       });
-      debugger;
       if (res?.error) {
         setError("root", {
           type: "manual",
@@ -51,7 +42,6 @@ export default function SignIn({
         router.push(callbackUrl);
       }
     } catch (error) {
-      debugger;
       setError("root", {
         message: "Something went wrong. Please try again.",
       });
@@ -66,7 +56,7 @@ export default function SignIn({
       {errors.root && (
         <div className="text-red-500 mb-4">{errors.root.message}</div>
       )}
-      <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+      {/* <input name="csrfToken" type="hidden" defaultValue={csrfToken} /> */}
       <label className="mb-4 flex flex-col" htmlFor="email">
         Email address
         <input
@@ -93,19 +83,4 @@ export default function SignIn({
       </button>
     </form>
   );
-}
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const csrfToken = await getCsrfToken(context);
-  const session = await getServerAuthSession(context);
-
-  // If the user is already logged in, redirect.
-  // Note: Make sure not to redirect to the same page
-  // To avoid an infinite loop!
-  if (session) {
-    return { redirect: { destination: "/" } };
-  }
-  return {
-    props: { csrfToken },
-  };
 }
