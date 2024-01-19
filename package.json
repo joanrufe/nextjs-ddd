@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "node .next/standalone/server.js",
+    "build": "next build",
     "dev": "next dev",
     "prebuild": "DISABLE_ERD_GENERATION=true && prisma generate || true",
-    "build": "next build",
-    "start": "next start",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
