@@ -93,7 +93,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: true,
+  debug: process.env.DEBUG_ENABLED === "true",
 };
 
 /**
