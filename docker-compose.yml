@@ -2,18 +2,9 @@ version: '3.8'
 services:
   postgres:
     image: postgres
-    ports: # map default postgres port to 5454
+    ports:
       - "5432:5432"
     environment:
       POSTGRES_DB: dddnext
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-  # nextjs:
-  #   container_name: nextjs
-  #   depends_on:
-  #     - postgres
-  #   ports: 
-  #     - "3000:3000"
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
