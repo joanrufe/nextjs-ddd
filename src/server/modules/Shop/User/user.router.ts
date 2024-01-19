@@ -1,9 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/trpc";
 import {
-  // getMyNotifications,
-  // getMyProfile,
-  // myProfileUpdater,
   GetMyNotifications,
   GetMyProfile,
   GetUserRole,
@@ -11,11 +8,10 @@ import {
 } from "./user.module";
 import { container } from "../..";
 
-const getMyNotifications =
-  container.resolve<GetMyNotifications>(GetMyNotifications);
-const getMyProfile = container.resolve<GetMyProfile>(GetMyProfile);
-const myProfileUpdater = container.resolve<MyProfileUpdater>(MyProfileUpdater);
-const getUserRole = container.resolve<GetUserRole>(GetUserRole);
+const getMyNotifications = container.get(GetMyNotifications);
+const getMyProfile = container.get(GetMyProfile);
+const myProfileUpdater = container.get(MyProfileUpdater);
+const getUserRole = container.get(GetUserRole);
 
 export const UpdateProfileDTO = z.object({
   name: z

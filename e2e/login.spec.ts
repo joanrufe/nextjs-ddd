@@ -25,7 +25,7 @@ test("login form makes successful login and redirects to /profile/update", async
   expect(await emailField.inputValue()).toBe("user@example.com");
   expect(await passwordField.inputValue()).toBe("user12345");
 
-  submitButton.click();
+  await submitButton.click();
 
   await page.waitForURL("http://localhost:3000/profile/update");
 });
