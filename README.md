@@ -1,43 +1,57 @@
-# DDD in NextJS backend
+# DDD in a NextJS backend
 
-This is an example of how to approach to a DDD like architecture in a NextJS project. This is very much opinionated and it's not meant to be a guide, but rather a way to explore how to structure a project like this.
-
-Key points:
-
-- Event Based Architecture using an in-memory synchronous event bus
-- Prevent imports from DDD folder that are not the entry point src/DDD/index.ts. This is done by eslint `import/no-internal-modules`` rule
+This is an example of how to approach a server-like architecture in a NextJS project
 
 In Domain-Driven Design, these domains represent different areas of the software's business logic. Each domain is isolated and can be developed independently, which helps in managing complexity and improving maintainability.
 
-## Domain-Driven Design (DDD) Folder Structure
+Key features:
 
-The DDD folder structure in this project is organized as follows:
+- Event-Based Architecture using an in-memory synchronous event bus to decouple the different domains
+- Eslint rule to Prevent imports from server folder that are not the entry point src/server/index.ts. This is done by the eslint `import/no-internal-modules` rule
+- Prisma ORM for database access and migrations
+- tRPC for type-safe RPC communication between the client and server
+- Jest for unit testing
+- Playwright for end-to-end testing
 
-- `DDD/`
-  - `Email/`
-  - `Notifications/`
+## Server Domain-Driven Design (DDD) Folder Structure
+
+The server folder structure in this project is organized as follows:
+
+- `server/`
+  - `Backoffice/`
+    - `User`
+      `Retention/`
+    - `Email/`
+    - `Notifications/`
   - `Shared/`
-  - `User/`
+    - `EventBus`
+    - `PrismaService`
+  - `Shop/`
+    - `User`
 
-Each subfolder within the `DDD/` directory represents a different domain of the application.
+Each subfolder within the `server/` directory represents a different domain of the application.
 
-### Email
+### Backoffice Bounded Context
 
-The `Email/` domain is responsible for handling all operations related to emails. It includes services for sending emails (`EmailService.ts`) and use cases such as sending a welcome email (`SendWelcomeEmail.ts`).
+The Backoffice bounded context is responsible for managing the backoffice, which is the part of the application that is used by the company's employees to manage the business.
 
-### Notifications
+The Backoffice bounded context is further divided into subdomains, which are represented by the subfolders within the `server/Backoffice/` directory. In this example, the only subdomain is the `User` subdomain.
 
-The `Notifications/` domain handles all operations related to notifications. It includes services for managing notifications (`NotificationService.ts`) and use cases such as sending a welcome notification (`SendWelcomeNotification.ts`).
+### Shop Bounded Context
 
-### Shared
+The Shop bounded context is responsible for managing the shop, which is the part of the application that is used by the company's customers to buy products.
 
-The `Shared/` domain contains shared resources that can be used across different domains. This includes the `EventBus.ts` for managing domain events and `PrismaService.ts` for interacting with the database.
+The Shop bounded context is further divided into subdomains, which are represented by the subfolders within the `server/Shop/` directory. In this example, the only subdomain is the `User` subdomain.
 
-### User
+### Retention Bounded Context
 
-The `User/` domain is responsible for all operations related to users. It includes services for managing users (`UserService.ts`) and use cases such as registering a user (`UserRegister.ts`) and fetching user data with notifications (`UserDataWithNotifications.ts`).
+The Retention bounded context is responsible for managing the retention of the company's customers. This includes sending emails and notifications to customers to encourage them to buy more products or keep using the company's services.
 
-## EventBus System
+### Shared Domain
+
+The Shared domain is responsible for managing shared functionality that is used by multiple domains. In this example, the only shared functionality is the EventBus system and the PrismaService.
+
+#### EventBus
 
 The EventBus system is a part of the `Shared/` domain and is a key component in our Domain-Driven Design architecture. It is implemented in the `EventBus.ts` file.
 
@@ -51,14 +65,24 @@ class UserRegistered implements DomainEvent {
   constructor(public readonly user: User) {}
 }
 
-// Subscribe to the event
-EventBus.subscribe(UserRegistered, (event) => {
-  console.log(`User registered: ${event.user.name}`);
-});
+// Subscribe to the event in an UseCase
+class MyUseCase {
+  constructor(private readonly eventBus: EventBus) {
+    this.eventBus.subscribe(
+      UserRegistered.name,
+      this.onUserCreated.bind(this),
+      this.constructor.name
+    );
+  }
+
+  private onUserCreated(event: UserRegistered) {
+    // Do something with the event
+  }
+}
 
 // Publish the event
 const user = new User(/* ... */);
-EventBus.publish(new UserRegistered(user));
+this.eventBus.publish(new UserRegistered(user));
 ```
 
 ## DB schema:
