@@ -38,6 +38,7 @@ export default function SignIn({
         redirect: false,
         email: data.email,
         password: data.password,
+        callbackUrl,
         csrfToken,
       });
       debugger;
