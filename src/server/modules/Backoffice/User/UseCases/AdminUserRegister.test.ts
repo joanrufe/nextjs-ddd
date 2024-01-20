@@ -1,18 +1,18 @@
-import { UserRegister } from "./UserRegister";
+import { AdminUserRegister } from "./AdminUserRegister";
 import { EventBus } from "../../../Shared/EventBus/EventBus";
-import { UserService } from "../Services/UserService";
+import { AdminUserService } from "../Services/AdminUserService";
 import { createUser } from "../Factories/UserFactory";
 import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
 
 describe("UserRegister", () => {
-  let userRegister: UserRegister;
+  let userRegister: AdminUserRegister;
   let eventBus: EventBus;
-  let userService: UserService;
+  let userService: AdminUserService;
 
   beforeEach(() => {
     eventBus = new EventBus();
-    userService = new UserService(prismaMock);
-    userRegister = new UserRegister(eventBus, userService);
+    userService = new AdminUserService(prismaMock);
+    userRegister = new AdminUserRegister(eventBus, userService);
   });
 
   describe("register", () => {

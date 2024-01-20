@@ -1,3 +1,4 @@
+import { AdminUserCreatedEvent } from "@/server/modules/Backoffice/User/Events/AdminUserCreatedEvent";
 import { NotificationService } from "../Services/NotificationService";
 import { EventBus } from "@/server/modules/Shared/EventBus/EventBus";
 import { UserCreatedEvent } from "@/server/modules/Shop/User/Events/UserCreatedEvent";
@@ -13,6 +14,11 @@ export class SendWelcomeNotification {
   ) {
     this.eventBus.subscribe(
       UserCreatedEvent.name,
+      this.onUserCreated.bind(this),
+      this.constructor.name
+    );
+    this.eventBus.subscribe(
+      AdminUserCreatedEvent.name,
       this.onUserCreated.bind(this),
       this.constructor.name
     );

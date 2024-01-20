@@ -41,7 +41,6 @@ export default function SignIn({
         callbackUrl,
         csrfToken,
       });
-      debugger;
       if (res?.error) {
         setError("root", {
           type: "manual",

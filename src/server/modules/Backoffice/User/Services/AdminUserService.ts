@@ -5,7 +5,7 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "@/server/modules/dep-definitions";
 
 @injectable()
-export class UserService {
+export class AdminUserService {
   constructor(
     @inject(TYPES.PrismaService) protected readonly prisma: PrismaService
   ) {}

@@ -1,15 +1,15 @@
 import { PrismaService } from "@/server/modules";
 import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
-import { UserService } from "./UserService";
+import { AdminUserService } from "./AdminUserService";
 import { createUser } from "../Factories/UserFactory";
 
-describe("UserService", () => {
-  let userService: UserService;
+describe("AdminUserService", () => {
+  let userService: AdminUserService;
   let prisma: PrismaService;
 
   beforeEach(() => {
     prisma = prismaMock;
-    userService = new UserService(prisma);
+    userService = new AdminUserService(prisma);
   });
 
   describe("getUser", () => {
@@ -110,6 +110,15 @@ describe("UserService", () => {
       await expect(
         userService.update(userId, { name: "Jane Doe" })
       ).rejects.toThrow("User not found");
+    });
+  });
+
+  describe("findMany", () => {
+    it("should return all users", async () => {
+      const users = [createUser(), createUser()];
+      jest.spyOn(prisma.user, "findMany").mockResolvedValueOnce(users as any);
+      const result = await userService.findMany();
+      expect(result).toEqual(users);
     });
   });
 });

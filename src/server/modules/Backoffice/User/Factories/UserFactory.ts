@@ -10,7 +10,7 @@ export function createUser(user?: Partial<OmitMethods<User>>): User {
     email: faker.internet.email(),
     emailVerified: faker.date.past(),
     image: faker.image.avatar(),
-    role: Roles.USER,
+    role: faker.helpers.arrayElement(Object.values(Roles)),
     ...user,
   });
 }

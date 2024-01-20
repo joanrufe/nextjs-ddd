@@ -11,4 +11,7 @@ container
   .bind<SendWelcomeNotification>(TYPES.SendWelcomeNotification)
   .to(SendWelcomeNotification);
 
+// Instantiate Use Case to make it reactive to Event Bus
+container.get<SendWelcomeNotification>(TYPES.SendWelcomeNotification);
+
 export { SendWelcomeNotification };

@@ -3,7 +3,6 @@ import { GetMyNotifications } from "./UseCases/GetMyNotifications";
 import { MyProfileUpdater } from "./UseCases/MyProfileUpdater";
 import { GetMyProfile } from "./UseCases/GetMyProfile";
 import { GetUserRole } from "./UseCases/GetUserRoles";
-import { EventBus, PrismaService } from "@/server/modules/Shared/shared.module";
 import { UserService } from "./Services/UserService";
 import { UserNotificationsService } from "./Services/UserNotificationsService";
 import { container } from "../..";
@@ -18,6 +17,8 @@ container
   .to(GetMyNotifications);
 container.bind<MyProfileUpdater>(TYPES.MyProfileUpdater).to(MyProfileUpdater);
 container.bind<GetMyProfile>(TYPES.GetMyProfile).to(GetMyProfile);
+container.bind<GetUserRole>(TYPES.GetUserRole).to(GetUserRole);
+container.bind<UserRegister>(TYPES.UserRegister).to(UserRegister);
 
 export {
   UserRegister,

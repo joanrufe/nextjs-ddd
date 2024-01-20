@@ -1,5 +1,6 @@
 import { createTRPCRouter } from "@/server/trpc";
 import { shopRouter } from "./Shop/shop.router";
+import { backofficeRouter } from "./Backoffice/backoffice.router";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +9,7 @@ import { shopRouter } from "./Shop/shop.router";
  */
 export const appRouter = createTRPCRouter({
   shop: shopRouter,
+  backoffice: backofficeRouter,
 });
 
 // export type definition of API
