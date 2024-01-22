@@ -1,10 +1,9 @@
 import { AdminUserRegister, ListUsers } from "./user.module";
 import { z } from "zod";
 import { createTRPCRouter, adminProcedure } from "@/server/trpc";
-import { container } from "../..";
 
-const adminUserRegister = container.get(AdminUserRegister);
-const listUsers = container.get(ListUsers);
+const adminUserRegister = new AdminUserRegister();
+const listUsers = new ListUsers();
 
 export const RegisterDTO = z.object({
   name: z

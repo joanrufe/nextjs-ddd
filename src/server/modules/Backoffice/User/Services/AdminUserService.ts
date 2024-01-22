@@ -1,14 +1,9 @@
 import { Prisma } from "@prisma/client";
 import { User } from "../Entities/User";
-import { PrismaService } from "@/server/modules";
-import { inject, injectable } from "inversify";
-import { TYPES } from "@/server/modules/dep-definitions";
+import { prismaSingleton } from "@/server/modules/Shared/PrismaService/prismaSingleton";
 
-@injectable()
 export class AdminUserService {
-  constructor(
-    @inject(TYPES.PrismaService) protected readonly prisma: PrismaService
-  ) {}
+  constructor(protected readonly prisma = prismaSingleton) {}
 
   async findOne(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({

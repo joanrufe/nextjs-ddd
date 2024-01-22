@@ -1,13 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import { UserNotification } from "../Entities/UserNotification";
-import { inject, injectable } from "inversify";
-import { TYPES } from "@/server/modules/dep-definitions";
+import { prismaSingleton } from "@/server/modules";
 
-@injectable()
 export class UserNotificationsService {
-  constructor(
-    @inject(TYPES.PrismaService) protected readonly prisma: PrismaClient
-  ) {}
+  constructor(protected readonly prisma = prismaSingleton) {}
 
   async findAll(email: string): Promise<UserNotification[]> {
     const notifications = await this.prisma.notification.findMany({

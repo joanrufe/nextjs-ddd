@@ -1,9 +1,6 @@
-import { injectable } from "inversify";
-
 // Generic type for events
 export class DomainEvent {}
 
-@injectable()
 export class EventBus {
   private handlers: Map<
     string,
@@ -82,5 +79,3 @@ export class EventBus {
     console.log(this.handlers);
   }
 }
-
-export const eventBusSingleton = new EventBus();

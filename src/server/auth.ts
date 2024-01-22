@@ -3,14 +3,12 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
-import { container } from "./modules";
 import { GetServerSidePropsContext } from "next";
 import { getServerSideAPI } from "@/api-client/server";
-import { PrismaService } from "./modules/Shared/shared.module";
 import { UserRegister } from "./modules/Shop/shop.module";
+import { prismaSingleton } from "./modules";
 
-const prismaSingleton = container.get(PrismaService);
-const userRegister = container.get(UserRegister);
+const userRegister = new UserRegister();
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers

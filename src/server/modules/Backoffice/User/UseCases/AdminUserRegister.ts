@@ -1,17 +1,13 @@
-import { EventBus } from "@/server/modules/Shared/EventBus/EventBus";
 import { AdminUserService } from "../Services/AdminUserService";
 import { AdminUserCreatedEvent } from "../Events/AdminUserCreatedEvent";
 import { OmitMethods } from "@/server/modules/Shared/Types/utility-types";
 import { User } from "../Entities/User";
-import { inject, injectable } from "inversify";
-import { TYPES } from "@/server/modules/dep-definitions";
+import { eventBusSingleton } from "@/server/modules";
 
-@injectable()
 export class AdminUserRegister {
   constructor(
-    @inject(TYPES.EventBus) protected readonly eventBus: EventBus,
-    @inject(TYPES.AdminUserService)
-    protected readonly adminUserService: AdminUserService
+    protected readonly eventBus = eventBusSingleton,
+    protected readonly adminUserService = new AdminUserService()
   ) {}
 
   async register(user: OmitMethods<Omit<User, "id">>): Promise<void> {

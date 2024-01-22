@@ -3,14 +3,13 @@ import { UserNotificationsService } from "../Services/UserNotificationsService";
 import { createUser } from "../Factories/UserFactory";
 import { createUserNotification } from "../Factories/UserNotificationsFactory";
 import { UserNotification } from "../Entities/UserNotification";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
 
 describe("GetMyNotifications", () => {
   let getUserNotifications: GetMyNotifications;
   let userService: UserNotificationsService;
 
   beforeEach(() => {
-    userService = new UserNotificationsService(prismaMock);
+    userService = new UserNotificationsService();
     getUserNotifications = new GetMyNotifications(userService);
   });
 

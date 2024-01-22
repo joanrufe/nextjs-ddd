@@ -6,13 +6,12 @@ import {
   GetUserRole,
   MyProfileUpdater,
 } from "./user.module";
-import { container } from "../..";
 import { TRPCError } from "@trpc/server";
 
-const getMyNotifications = container.get(GetMyNotifications);
-const getMyProfile = container.get(GetMyProfile);
-const myProfileUpdater = container.get(MyProfileUpdater);
-const getUserRole = container.get(GetUserRole);
+const getMyNotifications = new GetMyNotifications();
+const getMyProfile = new GetMyProfile();
+const myProfileUpdater = new MyProfileUpdater();
+const getUserRole = new GetUserRole();
 
 export const UpdateProfileDTO = z.object({
   name: z

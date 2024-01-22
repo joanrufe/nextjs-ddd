@@ -2,7 +2,6 @@ import { UserRegister } from "./UserRegister";
 import { EventBus } from "../../../Shared/EventBus/EventBus";
 import { UserService } from "../Services/UserService";
 import { createUser } from "../Factories/UserFactory";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
 
 describe("UserRegister", () => {
   let userRegister: UserRegister;
@@ -11,7 +10,7 @@ describe("UserRegister", () => {
 
   beforeEach(() => {
     eventBus = new EventBus();
-    userService = new UserService(prismaMock);
+    userService = new UserService();
     userRegister = new UserRegister(eventBus, userService);
   });
 

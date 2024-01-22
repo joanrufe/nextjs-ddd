@@ -1,12 +1,5 @@
 {
   "rules": {
-    "import/no-internal-modules": [
-      "error",
-      {
-        // Prevents importing this file from anywhere except the root
-        // necessary to prevent missing dependencies
-        "forbid": ["**/bind-dependencies"]
-      }
-    ]
+    "import/no-internal-modules": "off"
   }
 }

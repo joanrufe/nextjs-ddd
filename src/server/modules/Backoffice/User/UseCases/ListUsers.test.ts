@@ -1,6 +1,5 @@
 import { ListUsers } from "./ListUsers";
 import { AdminUserService } from "../Services/AdminUserService";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
 import { createUser } from "../Factories/UserFactory";
 
 describe("ListUsers", () => {
@@ -8,7 +7,7 @@ describe("ListUsers", () => {
   let userService: AdminUserService;
 
   beforeEach(() => {
-    userService = new AdminUserService(prismaMock);
+    userService = new AdminUserService();
     listUsers = new ListUsers(userService);
   });
 

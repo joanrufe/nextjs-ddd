@@ -1,16 +1,13 @@
-import "@/server/modules";
 import { GetUserRole } from "./GetUserRoles";
 import { UserService } from "../Services/UserService";
 import { createUser } from "../Factories/UserFactory";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
 
 describe("GetUserRoles", () => {
   let getUserRoles: GetUserRole;
   let userService: UserService;
-  // let PrismaService: jest.MockedClass<PrismaClient>;
 
   beforeEach(() => {
-    userService = new UserService(prismaMock);
+    userService = new UserService();
     getUserRoles = new GetUserRole(userService);
   });
 

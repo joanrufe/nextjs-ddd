@@ -3,7 +3,6 @@ import { EventBus } from "@/server/modules";
 import { UserService } from "../Services/UserService";
 import { UserUpdatedEvent } from "../Events/UserUpdatedEvent";
 import { createUser } from "../Factories/UserFactory";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
 
 describe("MyProfileUpdater", () => {
   let myProfileUpdater: MyProfileUpdater;
@@ -11,7 +10,7 @@ describe("MyProfileUpdater", () => {
   let eventBus: EventBus;
 
   beforeEach(() => {
-    userService = new UserService(prismaMock);
+    userService = new UserService();
     eventBus = new EventBus();
     myProfileUpdater = new MyProfileUpdater(eventBus, userService);
   });

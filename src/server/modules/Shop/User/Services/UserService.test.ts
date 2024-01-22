@@ -1,5 +1,4 @@
-import { PrismaService } from "@/server/modules/";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
+import { PrismaService, prismaSingleton } from "@/server/modules/";
 import { UserService } from "./UserService";
 import { createUser } from "../Factories/UserFactory";
 
@@ -8,8 +7,8 @@ describe("UserService", () => {
   let prisma: PrismaService;
 
   beforeEach(() => {
-    prisma = prismaMock;
-    userService = new UserService(prisma);
+    prisma = prismaSingleton;
+    userService = new UserService();
   });
 
   describe("getUser", () => {

@@ -1,14 +1,13 @@
 import { GetMyProfile } from "./GetMyProfile";
 import { UserService } from "../Services/UserService";
 import { createUser } from "../Factories/UserFactory";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
 
 describe("GetMyProfile", () => {
   let getUserProfile: GetMyProfile;
   let userService: UserService;
 
   beforeEach(() => {
-    userService = new UserService(prismaMock);
+    userService = new UserService();
     getUserProfile = new GetMyProfile(userService);
   });
 

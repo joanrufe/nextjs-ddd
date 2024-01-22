@@ -1,14 +1,13 @@
-import { PrismaService } from "@/server/modules";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
+import { PrismaService, prismaSingleton } from "@/server/modules";
 import { UserNotificationsService } from "./UserNotificationsService";
 import { createUserNotification } from "../Factories/UserNotificationsFactory";
 
 describe("UserNotificationsService", () => {
-  let userService: UserNotificationsService;
+  let userService = new UserNotificationsService();
   let prisma: PrismaService;
 
   beforeEach(() => {
-    prisma = prismaMock;
+    prisma = prismaSingleton;
     userService = new UserNotificationsService(prisma);
   });
 

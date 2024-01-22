@@ -4,14 +4,12 @@ import { UserCreatedEvent } from "../Events/UserCreatedEvent";
 import { UserModel } from "../interfaces/UserModel";
 import { OmitMethods } from "@/server/modules/Shared/Types/utility-types";
 import { User } from "../Entities/User";
-import { inject, injectable } from "inversify";
-import { TYPES } from "@/server/modules/dep-definitions";
+import { eventBusSingleton } from "@/server/modules";
 
-@injectable()
 export class UserRegister {
   constructor(
-    @inject(TYPES.EventBus) protected readonly eventBus: EventBus,
-    @inject(TYPES.UserService) protected readonly userService: UserService
+    protected readonly eventBus = eventBusSingleton,
+    protected readonly userService = new UserService()
   ) {
     this.eventBus = eventBus;
     this.userService = userService;

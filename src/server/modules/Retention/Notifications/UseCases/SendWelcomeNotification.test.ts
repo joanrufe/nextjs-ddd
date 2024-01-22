@@ -2,7 +2,6 @@ import { SendWelcomeNotification } from "./SendWelcomeNotification";
 import { NotificationService } from "../Services/NotificationService";
 import { EventBus } from "@/server/modules";
 import { createUser } from "@/server/modules/Shop/User/Factories/UserFactory";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
 
 describe("SendWelcomeNotification", () => {
   let sendWelcomeNotification: SendWelcomeNotification;
@@ -11,7 +10,7 @@ describe("SendWelcomeNotification", () => {
 
   beforeEach(() => {
     eventBus = new EventBus();
-    notificationService = new NotificationService(prismaMock);
+    notificationService = new NotificationService();
     sendWelcomeNotification = new SendWelcomeNotification(
       eventBus,
       notificationService

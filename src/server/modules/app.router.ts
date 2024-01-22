@@ -1,6 +1,7 @@
 import { createTRPCRouter } from "@/server/trpc";
 import { shopRouter } from "./Shop/shop.router";
 import { backofficeRouter } from "./Backoffice/backoffice.router";
+import "./app.init";
 
 /**
  * This is the primary router for your server.

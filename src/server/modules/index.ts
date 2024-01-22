@@ -4,7 +4,7 @@
  * into other modules.
  */
 // eslint-disable-next-line import/no-internal-modules
-import { container } from "./bind-dependencies";
+// import { container } from "./bind-dependencies";
 
 // Import all modules below so dependencies can be injected
 // it is ok just to import it here
@@ -14,4 +14,4 @@ export * from "./Shop/shop.module";
 
 // Export the container with all dependencies injected
 // use only this file to import the container
-export { container };
+// export { container };

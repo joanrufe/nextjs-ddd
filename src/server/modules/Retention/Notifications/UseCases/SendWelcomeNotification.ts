@@ -1,16 +1,12 @@
 import { AdminUserCreatedEvent } from "@/server/modules/Backoffice/User/Events/AdminUserCreatedEvent";
 import { NotificationService } from "../Services/NotificationService";
-import { EventBus } from "@/server/modules/Shared/EventBus/EventBus";
 import { UserCreatedEvent } from "@/server/modules/Shop/User/Events/UserCreatedEvent";
-import { TYPES } from "@/server/modules/dep-definitions";
-import { inject, injectable } from "inversify";
+import { eventBusSingleton } from "@/server/modules/Shared/shared.module";
 
-@injectable()
 export class SendWelcomeNotification {
   constructor(
-    @inject(TYPES.EventBus) protected readonly eventBus: EventBus,
-    @inject(TYPES.NotificationService)
-    protected readonly notificationService: NotificationService
+    protected readonly eventBus = eventBusSingleton,
+    protected readonly notificationService = new NotificationService()
   ) {
     this.eventBus.subscribe(
       UserCreatedEvent.name,

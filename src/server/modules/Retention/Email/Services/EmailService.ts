@@ -1,9 +1,6 @@
 import sendgridModule, { MailService } from "@sendgrid/mail";
 import { RequiredEmailData } from "../interfaces/RequiredEmailData";
-import { injectable } from "inversify";
 
-// TODO: Do something with dependency injection for sendgrid
-@injectable()
 export class EmailService {
   constructor(private readonly sendgrid: MailService = sendgridModule) {
     this.sendgrid = sendgrid;

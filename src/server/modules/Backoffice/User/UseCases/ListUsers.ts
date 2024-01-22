@@ -1,12 +1,9 @@
 import { AdminUserService } from "../Services/AdminUserService";
-import { inject, injectable } from "inversify";
-import { TYPES } from "@/server/modules/dep-definitions";
 
-@injectable()
 export class ListUsers {
   constructor(
-    @inject(TYPES.AdminUserService)
-    protected readonly adminUserService: AdminUserService
+    // @inject(TYPES.AdminUserService)
+    protected readonly adminUserService = new AdminUserService()
   ) {}
 
   async list() {

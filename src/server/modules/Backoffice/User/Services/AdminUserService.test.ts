@@ -1,15 +1,13 @@
-import { PrismaService } from "@/server/modules";
-import { prismaMock } from "@/server/modules/__mocks__/jest.setup";
+import { prismaSingleton } from "@/server/modules/Shared/shared.module";
 import { AdminUserService } from "./AdminUserService";
 import { createUser } from "../Factories/UserFactory";
 
 describe("AdminUserService", () => {
   let userService: AdminUserService;
-  let prisma: PrismaService;
+  let prisma = prismaSingleton;
 
   beforeEach(() => {
-    prisma = prismaMock;
-    userService = new AdminUserService(prisma);
+    userService = new AdminUserService();
   });
 
   describe("getUser", () => {

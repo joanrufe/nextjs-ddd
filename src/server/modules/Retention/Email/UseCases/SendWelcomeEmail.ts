@@ -1,15 +1,12 @@
 import { AdminUserCreatedEvent } from "@/server/modules/Backoffice/User/Events/AdminUserCreatedEvent";
 import { EmailService } from "../Services/EmailService";
-import { EventBus } from "@/server/modules/Shared/EventBus/EventBus";
+import { eventBusSingleton } from "@/server/modules/Shared/shared.module";
 import { UserCreatedEvent } from "@/server/modules/Shop/User/Events/UserCreatedEvent";
-import { TYPES } from "@/server/modules/dep-definitions";
-import { inject, injectable } from "inversify";
 
-@injectable()
 export class SendWelcomeEmail {
   constructor(
-    @inject(TYPES.EventBus) protected readonly eventBus: EventBus,
-    @inject(TYPES.EmailService) protected readonly emailService: EmailService
+    protected readonly eventBus = eventBusSingleton,
+    protected readonly emailService = new EmailService()
   ) {
     this.eventBus.subscribe(
       UserCreatedEvent.name,

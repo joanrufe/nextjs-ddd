@@ -1,16 +1,13 @@
-import { EventBus } from "@/server/modules/Shared/EventBus/EventBus";
 import { UserUpdatedEvent } from "../Events/UserUpdatedEvent";
 import { UserService } from "../Services/UserService";
 import { OmitMethods } from "@/server/modules/Shared/Types/utility-types";
+import { eventBusSingleton } from "@/server/modules";
 import { User } from "../Entities/User";
-import { inject, injectable } from "inversify";
-import { TYPES } from "@/server/modules/dep-definitions";
 
-@injectable()
 export class MyProfileUpdater {
   constructor(
-    @inject(TYPES.EventBus) protected readonly evenBus: EventBus,
-    @inject(TYPES.UserService) protected readonly userService: UserService
+    protected readonly evenBus = eventBusSingleton,
+    protected readonly userService = new UserService()
   ) {}
 
   async updateFields({

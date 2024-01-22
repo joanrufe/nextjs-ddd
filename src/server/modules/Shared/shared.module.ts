@@ -1,15 +1,12 @@
-import { container } from "..";
-import { TYPES } from "../dep-definitions";
 import { EventBus } from "./EventBus/EventBus";
 import { PrismaService } from "./PrismaService/PrismaService";
+import { prismaSingleton } from "./PrismaService/prismaSingleton";
+import { eventBusSingleton } from "./EventBus/eventBusSingleton";
 import { Roles } from "./User/Attributes/roles";
 
-// Bind shared dependencies
-container.bind<EventBus>(TYPES.EventBus).to(EventBus).inSingletonScope();
-container
-  .bind<PrismaService>(TYPES.PrismaService)
-  .to(PrismaService)
-  .inSingletonScope();
+export { prismaSingleton };
+
+export { eventBusSingleton };
 
 export { EventBus };
 export { PrismaService };

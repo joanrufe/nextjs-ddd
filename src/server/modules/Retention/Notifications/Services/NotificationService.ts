@@ -1,12 +1,7 @@
-import { PrismaService } from "@/server/modules";
-import { TYPES } from "@/server/modules/dep-definitions";
-import { inject, injectable } from "inversify";
+import { prismaSingleton } from "@/server/modules";
 
-@injectable()
 export class NotificationService {
-  constructor(
-    @inject(TYPES.PrismaService) protected readonly prisma: PrismaService
-  ) {}
+  constructor(protected readonly prisma = prismaSingleton) {}
   async createNotification(userId: string, message: string): Promise<void> {
     await this.prisma.notification.create({
       data: {
