@@ -1,10 +1,7 @@
 import { AdminUserService } from "../Services/AdminUserService";
 
 export class ListUsers {
-  constructor(
-    // @inject(TYPES.AdminUserService)
-    protected readonly adminUserService = new AdminUserService()
-  ) {}
+  constructor(protected readonly adminUserService = new AdminUserService()) {}
 
   async list() {
     const users = await this.adminUserService.findMany();
